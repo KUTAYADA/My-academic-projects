@@ -1,0 +1,93 @@
+GÜN 28
+
+Daha önce siber saldırıya uğrayan bir şirketin ana ofisinde, ağ altyapısının yeniden yapılandırılması ve güvenliğinin artırılması amacıyla çeşitli işlemler gerçekleştirildi.
+
+İlk olarak, Fortinet güvenlik duvarı cihazı (FortiGate) yerel ağa entegre edildi. İnternet erişimini sağlayan modem/router cihazı "Bridge Mode" (köprü modu) konumuna alındı ve tüm yönlendirme/güvenlik görevleri Fortinet cihazına devredildi. Bu yapılandırma sayesinde ağ trafiği doğrudan Fortinet üzerinden yönetilerek dış tehditlere karşı daha güçlü bir güvenlik katmanı oluşturuldu.
+
+Ayrıca, modem üzerindeki DHCP (IP dağıtımı) servisi devre dışı bırakıldı; bu görev Fortinet cihazı üzerinde etkinleştirildi. Böylece ağdaki IP yönetimi merkezi ve güvenli bir şekilde kontrol altına alındı.
+
+Sistemin veri bütünlüğünü sağlamak amacıyla, daha önce LTO kartuşta yedeklenmiş olan veriler TapeDrive aracılığıyla sunucuya yüklendi.
+
+Günün sonunda bir sonraki günün çalışma planı oluşturuldu. Plan kapsamında, ana ofiste bulunan sunucuya VMware üzerinden 3 adet sanal makine kurulması hedeflenmektedir. Bu sanal makineler, farklı şubelerdeki çalışanların uzak bağlantı ile erişip işlemlerini güvenli bir şekilde gerçekleştirebileceği şekilde yapılandırılacaktır.
+
+GÜN 29
+
+Şirketin ana ofisinde bulunan fiziksel sunucu üzerine VMware sanallaştırma yazılımı kurulmuştur. VMware ortamı kullanılarak, farklı görevleri yerine getirecek toplam üç adet sanal makine oluşturulmuştur. Bu sanal makinelerin amaçları ve görevleri aşağıda belirtilmiştir:
+
+Domain Controller (DC) Sunucusu
+
+Kullanıcı hesaplarının oluşturulması, silinmesi ve yönetimi
+
+Yetkilendirme ve kimlik doğrulama işlemleri
+
+Ağ kaynaklarına erişim izinlerinin düzenlenmesi
+
+NEBİM Uygulama Sunucusu
+
+Şubelerde görev yapan personelin POS (Point of Sale) ve fatura işlemlerinin yürütülmesi
+
+Ticari uygulamaların merkezi olarak yönetilmesi ve veri bütünlüğünün sağlanması
+
+Terminal (Dosya Paylaşım) Sunucusu
+
+Ortak dosya ve belgelerin depolanması
+
+Kullanıcılar arasında güvenli ve merkezi dosya paylaşımı sağlanması
+
+Bu yapı sayesinde sunucu kaynaklarının verimli kullanılması, yönetimsel işlemlerin kolaylaştırılması ve sistem performansının artırılması hedeflenmiştir.
+
+GÜN 30
+
+Mevcut internet kutusunun bridge moduna alınması nedeniyle kablosuz ağ (Wi-Fi) bağlantılarında kesintiler ve erişim problemleri yaşanmıştır.
+
+Bu sorunun çözümü amacıyla, Fortinet cihazına bir internet erişim kutusu bağlanmış ve bu cihazın Access Point (kablosuz erişim noktası) dışındaki tüm işlevleri (router, modem, DHCP sunucusu vb.) devre dışı bırakılmıştır.
+
+Yapılan bu yapılandırma sonucunda, çalışanların kurumsal ağa sorunsuz bir şekilde Wi-Fi üzerinden bağlanmaları sağlanmıştır.
+
+GÜN 31
+
+Bugün, MySQL Workbench yazılımı kullanılarak SQL sorguları üzerinde çalışmalar gerçekleştirilmiştir.
+
+Bu süreçte çeşitli yararlı SQL fonksiyonları öğrenilmiş ve aynı işlemlerin farklı yöntemlerle nasıl gerçekleştirileceği incelenmiştir. Özellikle, JOIN ifadeleri ile subquery (SELECT içerisinde SELECT) kullanılarak veri çekme ve birleştirme işlemleri karşılaştırılmıştır.
+
+Edinilen bilgiler, üzerinde çalışılan kütüphane projesine entegre edilmiş ve uygulamalı olarak test edilmiştir.
+
+GÜN 32
+
+Ofis deposunda bulunan bazı storage (depolama) cihazlarının hafıza kapasiteleri tespit edilerek Excel tablosu üzerinde kayıt altına alınmıştır. Bu işlem kapsamında cihazlar sırayla depodan ofise getirilmiştir.
+
+Her bir cihaz, Cat5 Ethernet kablosu kullanılarak bilgisayara bağlanmıştır. Storage cihazının ait olduğu IP sınıfına uygun bir IP adresi, manuel olarak bilgisayara atanmıştır. Ardından, Command Prompt (CMD) arayüzü üzerinden cihaza ping atılarak bağlantı testi gerçekleştirilmiştir.
+
+Ping işleminin başarılı olması durumunda, storage cihazının web tabanlı arayüzüne erişim sağlamak amacıyla, tarayıcı üzerinden https://[storage_ip_adresi] formatında bağlantı yapılmıştır. Bazı cihazlarda özel bir GUI (grafiksel kullanıcı arayüzü) yazılımı da kullanılmıştır.
+
+Bazı eski model storage cihazlarına bağlanırken, güncel tarayıcılarla uyumsuzluk yaşanmıştır. Bu nedenle, Mozilla Firefox’un eski bir sürümü cihaza yüklenerek bağlantı sorunu çözülmüş ve arayüze erişim sağlanmıştır.
+
+Elde edilen tüm teknik bilgiler ve kapasite verileri düzenli olarak Excel dosyasına işlenmiştir.
+
+GÜN 33
+
+Ofis deposunda bulunan bazı storage (depolama) cihazlarının hafıza kapasitelerinin tespiti ve kayıt altına alınması çalışmalarına devam edilmiştir. Tespit edilen kapasite bilgileri düzenli olarak Excel tablosuna aktarılmıştır.
+
+Bunun yanı sıra, müşteriye teslim edilmesi planlanan bir sunucuya RAID (Redundant Array of Independent Disks) yapılandırması uygulanmıştır. RAID kurulumu sayesinde veri güvenliği, performans ve yedeklilik sağlanması hedeflenmiştir.
+
+Ayrıca, çalışma süresince networking (ağ teknolojileri) ile ilgili yeni bilgiler edinilmiş ve uygulamalı olarak pekiştirilmiştir.
+
+GÜN 34
+
+Süresi geçmiş olan ödünç kitap işlemlerine yönelik, çalışanın gecikme süresine bağlı olarak kullanıcıya ceza verip vermeye karar verebileceği bir sistemin geliştirilmesine başlanmıştır. Sistem üzerinde iki temel işlem butonu tasarlanmıştır: “Ceza” ve “Sil.”
+
+Ceza Butonu: Çalışan, ceza butonuna tıkladığında, öğrenci kaydına ceza günü bilgisi eklenmektedir. Ceza süresi boyunca ilgili öğrenciye yeni kitap ödünç verilmesi engellenmektedir.
+
+Sil Butonu: Sil butonuna tıklandığında ise ceza işlemi uygulanmadan, kitabın iade edildiği kabul edilmekte ve öğrenciye herhangi bir kısıtlama getirilmemektedir.
+
+Bu işlevlerin yanı sıra, sistemin kullanıcı arayüzü için gerekli tasarımlar yapılmış; butonlara ikonlar, görseller ve detaylı açıklamalar eklenerek kullanım kolaylığı artırılmıştır.
+
+GÜN 35
+
+Kütüphane projesi kapsamında, süresi dolan kitaplar nedeniyle öğrencilere uyarı amaçlı e-posta göndermek için C# programlama dili kullanılarak nasıl mail gönderileceğine ilişkin araştırmalar yapılmıştır.
+
+Ayrıca, teslim süresinin bitmesine 24 saat kala öğrencilere hatırlatma e-postası göndermek amacıyla aynı sistemin kullanılması planlanmaktadır. Bugün kodlama yapılmamış, ancak gerekli teknik bilgiler toplanarak ileride gerçekleştirilecek geliştirmeler için altyapı hazırlanmıştır.
+
+Bunun yanında, gün içerisinde patronumuz ve yetkili kişiler tarafından genel performans değerlendirmem gerçekleştirilmiştir. Yapmış olduğum projeler incelenmiş ve geri bildirimler alınmıştır.
+
+Ayrıca iş başvuru formu doldurulmuş ve gelecekte kendimi geliştirmem gereken konular netleştirilmiştir.

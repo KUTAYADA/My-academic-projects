@@ -1,0 +1,131 @@
+GÜN 10
+
+Kitaplar tablosunun diğer tablolara göre daha karmaşık bir yapıya sahip olacağı öngörüldüğünden, öncelikle tablo yapısı kağıt üzerinde taslak olarak planlanmıştır. Veritabanı tasarımı aşamasında diğer tablolarla olan ilişkiler dikkate alınarak Foreign Key kullanımıyla bağlantılar oluşturulmuştur.
+
+Bu kapsamda;
+
+books tablosundaki B_authorno sütunu, authors tablosundaki A_no alanını Foreign Key olarak referans almaktadır.
+
+Aynı şekilde, books tablosundaki B_type sütunu ise booktype tablosundaki T_no alanına Foreign Key olarak bağlanmaktadır.
+
+Kullanıcının kitap türü ve yazar bilgilerini kolaylıkla seçebilmesi amacıyla, kullanıcı arayüzünde ComboBox bileşenleri kullanılmıştır. Bu bileşenlerde doğrudan Foreign Key değerleri yerine, ilgili tabloların anlamlı içerikleri (yazar isimleri ve kitap türleri) gösterilmiştir. Bu amaçla, veritabanından verileri getirmek için INNER JOIN sorguları kullanılmış ve gerekli bilgiler ComboBox bileşenlerine yansıtılmıştır.
+
+ComboBox’ların veri ile doldurulması için aşağıdaki metotlar yazılmıştır:
+
+ListAuthorNames() ve ListBookTypes() metotları, ilgili tablolardan (authors ve booktype) gerekli verileri çekmekte,
+
+Bu veriler sırasıyla PopulateCB_bookauthor(DataTable dt) ve PopulateCB_booktype(DataTable dt) metotlarına aktarılmakta ve burada ComboBox içerikleri dinamik olarak oluşturulmaktadır.
+
+Bu yapı sayesinde, kitap ekleme/güncelleme işlemlerinde kullanıcılar veritabanı yapısını bilmeden, sadece anlamlı veriler üzerinden işlem gerçekleştirebilmektedir.
+
+GÜN 11
+
+Projede kitap ekleme ve güncelleme işlemlerine yönelik gerekli kodlar yazılarak kullanıcıların kitap bilgilerini sisteme ekleyebilmesi ve mevcut kitap verilerini güncelleyebilmesi sağlanmıştır.
+
+Uygulamanın veri bütünlüğünü koruyabilmesi adına, kullanıcı tarafından tabloda bulunmayan bir kitap türü veya yazar adıyla kitap eklenmeye çalışıldığında sistem, ilgili tür veya yazar bilgisinin veritabanında bulunmadığını tespit ederek kullanıcıyı bilgilendirmekte ve eklemek isteyip istemediğini sormaktadır.
+
+Kullanıcı, eksik verilerden herhangi birini eklemek istemezse sistem kitap kaydını gerçekleştirmemektedir. Bu kontrol mekanizması sayesinde veri tutarlılığı ve ilişkisel bütünlük korunmuş olmaktadır.
+
+Kitap ekleme ve güncelleme işlemleri sırasında karşılaşılan çeşitli hatalar (bug’lar) analiz edilmiş ve çözülerek sistemin daha stabil çalışması sağlanmıştır. Bu süreçte, kullanıcı deneyimi iyileştirilmiş ve hata yönetimi mekanizmaları güçlendirilmiştir.
+
+GÜN 12
+
+Projeye, kitaplar tablosundan kitap silme özelliği eklenerek kullanıcıların sistemden kayıtlı kitapları kaldırabilmesi sağlanmıştır.
+
+Ayrıca, yazarlar tablosundan yazar silme işlemine yönelik veri bütünlüğünü koruyacak önlemler alınmıştır. Bir yazarın, kitaplar tablosunda en az bir kitapla ilişkisinin bulunması durumunda, bu yazarın sistemden silinmesini engelleyen kontrol mekanizmaları kodlanmıştır.
+
+Bu doğrultuda, yazar silme işlemi gerçekleştirilmeden önce ilgili yazarın kitaplar tablosunda referans alınıp alınmadığı kontrol edilmekte; eğer ilgili yazara ait en az bir kitap kaydı varsa, sistem kullanıcıyı bilgilendirerek silme işlemine izin vermemektedir.
+
+Bu işlem sayesinde ilişkisel veritabanı yapısı korunmuş, olası referans hatalarının (Foreign Key ihlallerinin) önüne geçilmiş ve sistemin veri güvenliği güçlendirilmiştir.
+
+GÜN 13
+
+Ödünç verme işlemi, sistemin en karmaşık bölümlerinden biri olduğundan, geliştirme sürecine başlamadan önce ihtiyaçlar detaylı şekilde analiz edilerek kağıt üzerinde bir taslak hazırlanmıştır. Bu analiz sonucunda ödünç alma işlemlerinin takibi için borrows adlı tablo oluşturulmuştur.
+
+Borrows tablosunun kolon yapısı şu şekildedir:
+
+Br_no: Ödünç alma işlemi için benzersiz kimlik numarası (Primary Key)
+Br_S_no: Kitabı ödünç alan öğrencinin ID bilgisi (Foreign Key - students tablosuna bağlı)
+Br_B_no: Ödünç alınan kitabın ID bilgisi (Foreign Key - books tablosuna bağlı)
+Br_bdt: Ödünç alma tarih ve saati (otomatik olarak sistemin geçerli zaman bilgisini alır)
+Br_rdt: Kitabın iade edilmesi gereken tarih
+
+Öğrencilerin toplamda kaç kitap aldığını izleyebilmek ve bu bilgiyi daha verimli bir şekilde yönetebilmek için ayrıca studBookCount adında bir tablo tasarlanmıştır. Bu tablo, her öğrencinin güncel kitap ödünç alma sayısını tutmaktadır.
+
+Veri bütünlüğünü ve otomasyonu sağlamak amacıyla, borrows tablosuna yeni bir kayıt eklendiğinde, TRIGGER mekanizması yardımıyla ilgili öğrencinin studBookCount tablosundaki verisi otomatik olarak güncellenmektedir. Bu sayede manuel müdahaleye gerek kalmadan, öğrenci bazlı ödünç kitap sayıları güncel tutulmaktadır.
+
+Bu yapı ile birlikte, hem veri tutarlılığı sağlanmış hem de ödünç işlemlerinin performansı artırılmıştır.
+
+GÜN 14
+
+Kullanıcı arayüzünde, alt kısımda yer alan DataGridView bileşeni üzerinden seçilen öğrenci ve kitap bilgilerine göre, üst kısımdaki ilgili DataGridView’lerde doğru verilerin otomatik olarak seçilmesi sağlanmıştır. Böylece kullanıcı, ödünç verme işleminde ilgili öğrenci ve kitabı kolaylıkla kontrol edebilmektedir.
+
+Öğrencilere kitap teslimi için arayüze “Give Book” (B_givebook) isimli bir buton eklenmiştir. Bu buton aracılığıyla, belirli kurallara bağlı olarak ödünç verme işlemi gerçekleştirilmektedir. Geliştirilen kontrol mekanizması sayesinde:
+
+Öğrencinin daha önce ödünç aldığı kitap sayısı 3'ten azsa ve
+
+İlgili kitap başka bir öğrenci tarafından halihazırda ödünç alınmamışsa,
+
+kitap ödünç verme işlemi onaylanmaktadır.
+
+B_givebook butonuna tıklanmasıyla birlikte ControlBorrowConditions(...) isimli fonksiyon çağrılmakta ve bu fonksiyon, kitap ödünç verme koşullarını değerlendirerek işlemin yapılıp yapılmayacağına karar vermektedir.
+
+Bu geliştirme ile hem kullanıcı dostu bir arayüz sağlanmış hem de sistemde veri doğruluğu ve mantıksal bütünlük korunarak hatalı ödünç işlemlerinin önüne geçilmiştir.
+
+GÜN 15
+
+Sisteme 8 adet HDD eklenebilmesi amacıyla, her biri 4 disk destekleyen iki adet backplane modülü sunucuya entegre edilmiştir. Bu backplane modülleri, SAS kabloları aracılığıyla RAID kartına bağlanmıştır. Tüm disklerin fiziksel bağlantıları tamamlandıktan sonra, RAID 5 yapılandırması uygulanmıştır. Ardından, sistem üzerine Windows Server 2012 işletim sistemi başarıyla kurulmuştur.
+
+Ayrıca, çalışılan şirkette bulunan mevcut TapeDrive cihazı, takılan LTO (Linear Tape-Open) kartuşları okuyamadığı için değiştirilmiştir. İşlem öncesinde, sunucuya IP adresi üzerinden uzaktan bağlantı sağlanmış, ardından TapeDrive cihazı offline moda alınarak güvenli şekilde çıkarılmıştır.
+
+Yapılan işlemler sonucunda, sistemin veri yedekleme, depolama ve işletim sistemi seviyesindeki temel kurulumları başarıyla tamamlanmıştır.
+
+GÜN 16
+
+Kitap ödünç verme formunda, veri bütünlüğünü korumak amacıyla, bir öğrencinin üzerinde hâlen iade edilmemiş kitap bulunması durumunda, bu öğrencinin sistemden silinmesini engelleyen kontrol fonksiyonları sisteme entegre edilmiştir. Aynı şekilde, ödünçte bulunan bir kitap da başka bir öğrencide kayıtlıysa, sistem üzerinden silinmesine izin verilmemektedir. Bu sayede, borç ilişkisi tamamlanmamış kayıtlar için veri kaybının ve mantıksal tutarsızlıkların önüne geçilmiştir.
+
+Ayrıca, Borrows.cs formuna ikinci bir DataGridView nesnesi eklenmiş olup bu bileşen, teslim süresi geçmiş (geciken) ödünç kayıtlarını listelemek üzere yapılandırılmıştır.
+
+Form yüklendiğinde çalışan Form_Load olayında:
+
+borrows tablosundaki kayıtlar taranır.
+
+Teslim tarihi (Br_rdt), sistem zamanından küçük olan satırlar belirlenerek geçici bir DataTable nesnesine alınır.
+
+Bu veriler önce expired (teslim tarihi geçmiş kayıtlar) tablosuna aktarılır.
+
+Ardından aynı kayıtlar borrows tablosundan silinerek aktif ödünç listesi güncellenmiş olur.
+
+Bu yapı sayesinde kullanıcıya güncel ve doğru veri sunulması sağlanırken, geciken teslim kayıtlarının ayrı bir tabloda arşivlenmesiyle birlikte sistemin izlenebilirliği de artırılmıştır.
+
+GÜN 17
+
+Teslim süresi geçmiş ödünç kayıtlarının expired tablosuna aktarılması için gerekli kontrol fonksiyonları yazılmıştır. Bu işlem sırasında, DateTime formatlarının DataGridView üzerinde ve SQL Server tarafında farklılık göstermesi nedeniyle veri aktarımı sırasında bazı hatalar (error) oluşmuştur. Bu durumu engellemek amacıyla, tarih ve saat verilerinin tutarlılığı sağlanarak her iki ortam arasında format uyumlama prosedürleri uygulanmıştır. Böylece, veri tipi uyuşmazlıkları giderilmiş ve sistemde stabil bir aktarım süreci sağlanmıştır.
+
+Ayrıca, bir kurumun IBM AS/400 sunucusunda RAID kontrol kartına ait yedekleme (cache) pilinin kalan ömrünün 44 gün olarak raporlanması üzerine pil değişimi gerçekleştirilmiştir.
+
+İşlem öncesinde, sistemin çalışmasına zarar vermemek ve kullanıcı erişimini kontrol altına almak amacıyla:
+
+Yerel ağ üzerinden sunucuya bağlantı sağlanmış ve ön kontroller yapılmıştır.
+
+Sistem üzerindeki IP adresi “disable” (devre dışı) konuma getirilerek kullanıcıların sunucuya erişimi geçici olarak durdurulmuştur.
+
+Ardından cihaz kontrollü bir şekilde kapatılmıştır. Kapatma sürecinde bir hata (error) kodu ile karşılaşılmış, bu durum kayıt altına alınarak ileride incelenmek üzere log dosyalarına işlenmiştir.
+
+Donanım müdahalesi olarak, kasa açılmış ve RAID kartına ait pil güvenli bir şekilde çıkarılıp yeni pille değiştirilmiştir.
+
+Sunucu yeniden başlatılmış ve tekrar yerel ağ bağlantısı kurularak sistemin stabil çalıştığı doğrulanmıştır.
+
+Bu işlemle birlikte hem veri kaybı riski ortadan kaldırılmış hem de RAID kartının performans ve güvenliği garanti altına alınmıştır.
+
+GÜN 18
+
+Sistemde veri tutarlığını sağlamak amacıyla, expired (teslim süresi geçmiş ödünçler) tablosundaki veriler dikkate alınarak aşağıdaki kontrol mekanizmaları geliştirilmiştir:
+
+Expired tablosunda kaydı bulunan öğrencilerin, sistemden silinmesine izin verilmemesi sağlanmıştır. Bu sayede süresi geçmiş ödünçlere sahip öğrencilerin geçmiş kayıtları korunmuş ve veri kaybı engellenmiştir.
+
+Aynı şekilde, expired tablosunda yer alan kitapların başka bir öğrenciye yeniden ödünç verilmemesi için kontrol fonksiyonları eklenmiştir. Bu işlem, teslim edilmeyen kitapların tekrar dolaşıma sokulmasını engelleyerek sistemin güvenilirliğini artırmaktadır.
+
+Mevcut durumda bir öğrenciye kitap verilip verilemeyeceğini kontrol eden fonksiyon, bu yeni gereksinimleri karşılayacak şekilde güncellenmiştir. Artık sistem, kitap vermeden önce hem öğrencinin aktif (borrows tablosundaki) ödünç sayılarını hem de expired (gecikmiş teslim) kayıtlarını birlikte değerlendirerek toplamı 3 veya daha fazlaysa yeni kitap verilmesine izin vermemektedir.
+
+Bu geliştirmeler ile birlikte ödünç verme sistemine daha güçlü bir denetim katmanı eklenmiş, hem işlem güvenliği hem de veri bütünlüğü açısından önemli bir iyileştirme sağlanmıştır.  Bilgisayara VPN için FortiClient uygulaması yüklenmiştir. 

@@ -1,0 +1,99 @@
+GÜN 19
+
+Bugün, Ankara'daki bir şirkete ait sistemin farklı bir odaya taşınma sürecine destek olmak amacıyla tren ile Ankara'ya seyahat edildi. Yaklaşık 8 saat süren tren yolculuğu sırasında sistem taşıma süreciyle ilgili ön hazırlıklar yapıldı.
+
+Ankara'ya varışın ardından, sistemin bulunduğu Türk Telekom Data Center'a giriş sağlandı. Taşıma işlemine başlamadan önce mevcut bağlantıların detaylı bir şekilde dokümantasyonu yapıldı. Hangi kablonun, hangi cihazın, hangi node’unun, hangi portundan çıkıp hangi cihazın, hangi node’unun, hangi portuna bağlandığı bilgileri dikkatli bir şekilde not alındı ve elle çizilmiş bir bağlantı şeması hazırlandı.
+
+Çalışma kapsamında;
+
+2 adet Switch,
+
+2 adet Storage ünitesi,
+
+1 adet HMC (Hardware Management Console),
+
+2 adet Juniper cihazının bağlantı yapıları detaylı olarak incelendi ve tablo haline getirildi.
+
+Ancak bazı teknik aksaklıklar ve öngörülemeyen sorunlar nedeniyle sistem taşıma işlemi bir sonraki güne ertelendi.
+
+GÜN 20
+
+Bugün, daha önce ön hazırlıkları yapılan sistem taşıma işlemini gerçekleştirmek üzere tekrar Türk Telekom Data Center’a giriş yapıldı.
+
+Taşınacak cihazlar planlanan şekilde offline moda alınarak güvenli bir şekilde kapatıldı. Ardından sistemin fiziksel taşıma sürecine geçildi. Yaklaşık 4 saat süren operasyon sonucunda tüm cihazlar yeni odaya başarılı bir şekilde taşındı.
+
+Taşıma işleminin ardından sistemin yeniden devreye alınması sürecine geçildi. Ancak cihazlara güç ulaşmadığı fark edildi ve bu nedenle güç kaynağına ilişkin detaylı bir sorun giderme süreci başlatıldı. Yapılan kontroller sonucunda sorun tespit edilerek giderildi ve sistem yeniden enerji verilerek online moda alındı.
+
+Taşıma ve devreye alma işlemleri başarıyla tamamlandıktan sonra havalimanına geçilerek uçak ile İstanbul’a dönüş sağlandı.
+
+İstanbul ofisimize ulaşıldıktan sonra, uzaktan güvenli erişim sağlamak amacıyla FortiGate VPN üzerinden ofiste bulunan SQL Server’a bağlantı kurulması için gerekli konfigürasyonlar yapıldı. Ayrıca, dışarıdan gelen internet bağlantısı (WAN) FortiGate cihazına yönlendirildi. Mevcut modem/router cihazı bridge (köprü) moduna alınarak, ağ trafiği ve güvenlik yönetimi FortiGate cihazı üzerinden sağlanacak şekilde yapılandırıldı.
+
+GÜN 21
+
+Bugün yerel ağ üzerinde çeşitli yapılandırma işlemleri gerçekleştirildi. Öncelikle, ağ cihazları ve istemciler için gerekli IP konfigürasyonları yapılarak yerel ağ düzeni sağlandı. Mevcut yazıcı (printer), lokal ağa dahil edilerek kullanıcıların ağa bağlı cihazlar üzerinden yazıcıya erişim sağlayabilmesi mümkün hale getirildi.
+
+Ayrıca, güvenli uzaktan erişim sağlanabilmesi amacıyla Atlantis isimli internet sağlayıcıdan yeni bir internet aboneliği alındı. Bu bağlantı, özellikle sunucuya VPN üzerinden erişimlerde kullanılmak üzere yapılandırıldı. Sağlayıcıdan statik IP adresi temin edilerek, VPN bağlantılarında sabit ve güvenilir bir ağ geçidi sağlandı.
+
+Yeni internet bağlantısı için kullanılan modem/router cihazı, bridge (köprü) moduna alınarak görevleri FortiGate güvenlik duvarı cihazına devredildi. Fiziksel bağlantı, internet kutusunun LAN1 portu ile FortiGate cihazının WAN portu arasında CAT6 kablo kullanılarak gerçekleştirildi.
+
+İnternet kutusunun DHCP (dinamik IP dağıtımı) özelliği devre dışı bırakıldı ve bu görev FortiGate cihazına aktarıldı. Böylece tüm internet trafiği ve IP dağıtımı FortiGate üzerinden kontrol altına alındı.
+
+Not: Mevcut kullanıcı cihazları hâlen önceki sağlayıcı olan Türk Telekom üzerinden internete erişirken, yüksek güvenliğe ihtiyaç duyulan sunucu altyapısı için ayrı bir hat olan Atlantis bağlantısı kullanılarak izole ve güvenli bir ağ ortamı oluşturulmuştur.
+
+GÜN 22
+
+Daha önce ofisimize teslim edilen Honda'ya ait AS/400 sistemleri üzerinde yaklaşık iki ay süren bir konfigürasyon süreci gerçekleştirildi. Bu süreçte, sistemler için gerekli olan yazılımlar (Java, SQL, MIMIX vb.) yüklenerek kurulumlar tamamlandı. Sistem güncellemeleri eksiksiz olarak uygulanarak, tüm bileşenlerin en güncel ve kararlı sürümlerle çalışması sağlandı.
+
+AS/400 sistemlerinde çalışması gereken servisler aktive edildi. Bu kapsamda; sistemlerin belirli saatlerde otomatik açılıp kapanması, zamanlanmış görevlerin çalıştırılması gibi planlamalar yapıldı.
+
+Yedekleme işlemleri için LTO kartuşları kullanılarak TapeDrive cihazı üzerinden Backup ve Restore (yedekleme ve geri yükleme) işlemleri başarıyla tamamlandı. Bu işlemler sayesinde sistemin veri güvenliği sağlanmış oldu.
+
+Hazırlıkları tamamlanan 2 adet AS/400 sistem (biri ana, diğeri yedek) ve 2 adet TapeDrive cihazı dikkatli şekilde paketlenerek araca yüklendi. Ardından, Türk Telekom tarafından sağlanan Data Center’a taşınmak üzere yola çıkıldı.
+
+Data Center’a varışın ardından gerekli giriş işlemleri tamamlandı ve sistemler araçtan indirilerek montaj işlemine geçildi. Tüm cihazlar ilgili rack kabinlere yerleştirilerek fiziksel kurulum işlemleri tamamlandı.
+
+Ancak ayrılan sürenin sona ermesi nedeniyle sistemlerin detaylı konfigürasyon işlemleri bir sonraki güne bırakıldı.
+
+GÜN 23
+
+Bir önceki gün sürenin yetersiz kalması nedeniyle tamamlanamayan sistem konfigürasyonları bugün gerçekleştirildi.
+
+VMware ortamı üzerinde, IBM sistemlerinin yönetim arayüzü olan HMC (Hardware Management Console) kullanılarak AS/400 cihazları sisteme tanıtıldı. Her cihaza uygun şekilde IP adresleri atandı ve sistem ağına dahil edildi.
+
+Ayrıca, kullanıcı yetkilendirme işlemleri gerçekleştirilerek, farklı kullanıcı seviyeleri için gerekli izinler tanımlandı. Böylece sistem yöneticileri ve operatörlerin güvenli ve kontrollü erişimi sağlanmış oldu.
+
+Tüm bu işlemler sonucunda AS/400 sistemleri aktif, yönetilebilir ve güvenli şekilde çalışır duruma getirildi.
+
+GÜN 24
+
+Switch, modem, router, sunucular ve üzerlerinde çalışan servisleri daha iyi anlayabilmek amacıyla Cisco Packet Tracer uygulaması kullanılarak sanal bir ağ ortamı oluşturuldu.
+
+Bu sanal ağ üzerinde temel ve ileri düzey ağ cihazlarının nasıl çalıştığı, aralarındaki veri akışı ve konfigürasyon süreçleri simüle edilerek uygulamalı olarak incelendi.
+
+Ayrıca, network (ağ) ile ilgili temel kavramlar, IP adresleme, subnetting, yönlendirme (routing), VLAN, DHCP, DNS gibi konular tekrar edilerek pekiştirildi. Bu çalışmalar sayesinde ağ altyapısının temel bileşenleri ve işleyişi hakkında daha derinlemesine bilgi edinildi.
+
+GÜN 25
+
+Şirketimizde bulunan cihazların, yedek parçaların, satışı gerçekleştirilen ürünlerin ve müşteri bilgilerinin daha verimli bir şekilde takip edilebilmesi amacıyla bir stok takip programı geliştirilmesine karar verildi.
+
+Projenin ilk aşamasında, sistemin veritabanı yapısı planlandı. Programda kullanılacak SQL tabloları, bu tablolar arasındaki ilişkiler, birincil anahtarlar (Primary Key) ve yabancı anahtarlar (Foreign Key) kağıt üzerinde detaylı bir şekilde tasarlandı.
+
+Ardından, C# programlama dili ile geliştirilecek olan bu yazılımın genel algoritma yapısı ve işleyiş mantığı şematik olarak oluşturuldu. Kullanıcı arayüzü, veri akışı ve temel işlevler planlandı.
+
+Hazırlanan altyapı, algoritma şeması ve veritabanı tasarımı şirket yöneticimize sunularak değerlendirmeye alındı. Geri bildirimler doğrultusunda gerekli iyileştirmeler yapıldıktan sonra proje onayı alındı ve geliştirme sürecine başlanması kararlaştırıldı.
+
+GÜN 26
+
+Ofisimizde bulunan tüm cihaz ve donanım parçalarının envanter kontrolü amacıyla stok sayım işlemlerine başlandı.
+
+Sayım sürecinde parçalar türlerine göre kategorilere ayrılarak düzenli bir şekilde kutulara yerleştirildi. Kullanılamaz durumda olan eski parçalar ve kartuşlar, yeni ve aktif olarak kullanılan parçalardan ayrı bir şekilde toplandı.
+
+Stok sayımı sistematik biçimde devam ettirilirken, bazı parçalar şirketimize ait yeni depoya taşındı. Bu taşıma işlemleri için ofis içi taşıma arabaları kullanılarak güvenli ve düzenli bir şekilde nakliye gerçekleştirildi.
+
+Tüm parça ve cihazlara ait bilgiler, ileride SQL tabanlı stok takip sistemine aktarılmak üzere geçici olarak Excel dosyasına kaydedildi. Böylece dijital arşivleme ve veri giriş süreçleri için sağlam bir altyapı oluşturulmuş oldu.
+
+GÜN 27
+
+Bugün, ofisimizde yürütülen stok sayım çalışmalarının son günü tamamlandı. Yapılan envanter kontrolleri sonucunda eksik veya azalan parçalar tespit edilerek siparişleri oluşturuldu ve tedarik süreci başlatıldı.
+
+Ayrıca, bazı parçalar müşteri talepleri doğrultusunda paketlenerek ilgili adreslere sevk edildi. Böylece hem iç envanter düzeni sağlanmış hem de müşteri ihtiyaçlarına hızlı şekilde yanıt verilmiş oldu.

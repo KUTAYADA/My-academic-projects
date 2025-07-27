@@ -1,0 +1,121 @@
+GÜN 1
+
+Stajın ilk gününde şirket ortamına adaptasyonu sağlamak amacıyla, çalışma arkadaşlarımız ve yöneticilerimizle tanışma gerçekleştirildi. Ardından oryantasyon süreci başlatılarak, şirketin vizyonu, misyonu, organizasyon yapısı ve projelerde izlenen çalışma yöntemleri hakkında detaylı bilgilendirme yapıldı. Gün içerisinde düzenlenen toplantıya katılarak, şirketin kısa ve uzun vadeli hedefleri ile stajyer olarak üstleneceğimiz sorumluluklar aktarıldı.
+
+Staj süreci boyunca kullanılacak temel yazılım ve donanım bileşenleri belirlenerek bilgisayar ortamı yapılandırıldı. Kod geliştirme ve hata ayıklama işlemleri için Visual Studio ve Visual Studio Code gibi entegre geliştirme ortamları (IDE) kuruldu. Ayrıca, veritabanı işlemlerinin sağlıklı yürütülebilmesi için Microsoft SQL Server (MSSQL) yapılandırıldı. Veri analizi ve görselleştirme çalışmaları için Python programlama dili ve ilgili kütüphaneler (Pandas, NumPy, Matplotlib vb.) yüklendi. Sürüm kontrolü ve ekip içi koordinasyonun sağlanması amacıyla Git ve GitHub hesapları tanımlanarak, temel komutlarla testler gerçekleştirildi.
+
+Ayrıca bilgisayar donanımı hakkında temel bilgiler hatırlatıldı; işlemci (CPU), bellek (RAM), depolama birimleri (HDD/SSD), anakart ve ağ donanımları gibi bileşenlerin işleyişi ve arıza tespiti üzerine kısa bir eğitim verildi. Donanım yapılandırması kontrol edilerek sistemin güncel sürücülerle stabil çalışması sağlandı.
+
+Ağ teknolojileri ve sanal ağ simülasyonları üzerine çalışmalarda kullanılacak olan Cisco Packet Tracer uygulaması kurularak, temel ağ topolojileri oluşturma ve yönlendirme protokolleri ile ilgili temel senaryolar üzerinde denemeler yapıldı. Böylece, hem yazılım geliştirme hem de ağ yapılandırma konularında uygulanacak tekniklerin altyapısı hazırlandı.
+
+Günün sonunda yapılan sistem testleri ve deneme uygulamalarıyla kurulumların doğruluğu kontrol edildi. Diğer çalışanlarla gayriresmî tanışma ortamları yaratılarak, şirket içi iletişim ve işleyiş hakkında ek bilgilendirmeler alındı. Son olarak, haftalık hedefler belirlenerek takip edilecek öğrenme ve uygulama adımları planlandı.
+
+
+Böylece geliştirme ortamının sorunsuz şekilde çalıştığı doğrulandı.
+
+GÜN 2
+
+Staj sürecinin bu bölümünde, şirket bünyesinde yer alan bazı sunucular araştırılarak teknik özellikleri ve kullanım amaçları hakkında detaylı bilgi edinildi. Sunucuların hangi departmanlar tarafından ne şekilde kullanıldığı, performans gereksinimleri ve donanım yapılandırmaları incelendi. Ayrıca, temel seviyede konfigürasyon işlemlerinin nasıl gerçekleştirildiği gözlemlendi ve uygulamalı olarak denendi.
+
+Özellikle AS/400 ve OS/400 sistemleri ile Windows Server platformları üzerine temel bilgiler toplandı. Bu sunucu işletim sistemlerinin farkları, kullanım alanları ve sistem yöneticiliği konularında temel düzeyde teorik bilgi edinildi.
+
+Mevcut sunuculardan birinde yaşanan arıza nedeniyle oluşan kesinti üzerine teknik bir müdahale gerçekleştirildi. Hata tespiti sonucunda sorunlu HDD (Hard Disk Drive) birimleri yenileriyle değiştirilerek sistem yeniden çalışır hale getirildi. Sonrasında gerekli BIOS ve yazılım konfigürasyonları yapılarak, RAID yapılandırması uygulandı. Bu işlem sayesinde veri güvenliği ve sistem performansı artırıldı.
+
+Ayrıca, C# programlama dili ve MySQL veritabanı kullanılarak geliştirilecek olan kütüphane yönetim sistemi projesi üzerinde çalışmalara başlandı. Bu kapsamda, projenin giriş ekranı olarak kullanılacak olan MainMenu.cs sınıfı oluşturuldu ve kullanıcı arayüzü (GUI) temel seviyede tasarlandı. Uygulamanın işleyiş mantığı planlanarak, sınıf yapıları ve temel işlemler için ön hazırlıklar yapıldı.
+
+Veritabanı tarafında ise, kullanılacak olan tabloların yapısı ve aralarındaki ilişkiler analiz edilerek, ilişkisel veritabanı tasarımı ilkelerine uygun şekilde bir taslak çizimi fiziksel olarak hazırlanıp, proje planlamasına dâhil edildi.
+
+
+GÜN 3
+
+Stajın bu aşamasında, C# programlama dili ile MySQL veritabanı bağlantısı kurularak uygulamanın veri ile etkileşim kurması sağlandı. Veritabanı bağlantısı, projeye dahil edilen App.config yapılandırma dosyası aracılığıyla gerçekleştirilmiştir. Bu sayede bağlantı bilgilerinin merkezi bir yerde tutulması ve gerektiğinde kolaylıkla güncellenebilmesi sağlanmıştır.
+
+Bağlantıyı yönetecek olan DBConnection adlı bir sınıf oluşturuldu. Bu sınıfa, MySqlConnection türünde connect() isimli bir metot eklenerek dış sınıfların bu metodu kullanarak veritabanına bağlanabilmeleri sağlandı.
+
+Bu süreçte, C# dilinde kullanılan public, private ve static erişim belirleyicileri hakkında teorik ve uygulamalı bilgi edinildi:
+
+public: Her yerden erişilebilir üyeleri tanımlar; private: Sadece tanımlandığı sınıf içerisinde erişilebilir; static: Sınıfın örneği oluşturulmadan doğrudan sınıf adıyla erişilebilen üyeleri belirtir.
+
+Bu bilgiler doğrultusunda, diğer sınıfların connect() metoduna erişebilmesi için hem sınıf hem de metod public olarak tanımlandı. Ancak, sınıfın örneği (instance) oluşturulmadan bu metot kullanılmak istendiğinde connect() metodunun static olarak da tanımlanabileceği not edildi. Bu durum, proje geliştirimi açısından önemli bir tasarım tercihi olarak değerlendirilmiştir.
+
+Uygulamanın “Öğrenciler” modülü üzerinde geliştirmelere başlanmıştır. Öğrencilere ait işlemler sırasında veritabanı bağlantısının yönetilmesi amacıyla, OpenClose.cs adında yardımcı bir sınıf oluşturulmuştur. Bu sınıfa iki adet statik metot tanımlanmıştır.
+
+Bu metodlar sayesinde, bağlantının açık olup olmadığını kontrol ederek gereksiz bağlantı açma/kapatma işlemlerinin önüne geçilmiş, böylece kaynak yönetimi optimize edilmiştir.
+
+Ayrıca uygulamanın kullanıcı deneyimini ve hata dayanıklılığını artırmak amacıyla, try-catch blokları ile hata yönetimi yapılmış ve kullanıcıya uygun mesajlar gösterilmesi sağlanmıştır. Buna ek olarak, kullanıcı arayüzü tarafında, butonların üzerine fare imleci geldiğinde açıklayıcı bilgiler gösterilmesi amacıyla ToolTip bileşeni entegre edilmiştir.
+
+Bu çalışmalar sayesinde hem yazılım mimarisi daha sağlam hale getirilmiş hem de uygulamanın modülerliği ve kullanıcı dostu arayüz yapısı güçlendirilmiştir.
+
+GÜN 4
+
+Bugünkü staj çalışmasında, şirket verilerinin yedeklenmesi amacıyla LTO (Linear Tape-Open) Ultrium 6 modeli kullanılarak backup işlemi gerçekleştirildi. İlk olarak, Tape Drive sunucuya fiziksel olarak takıldı. Ardından LTO kaseti (tape), Tape Drive cihazına yerleştirildi. Sunucu, UTP kablosu aracılığıyla Windows Server yüklü bilgisayara bağlandı.
+
+Bilgisayar üzerinden IBM i Access Client Solutions uygulaması kullanılarak sunucuya erişim sağlandı. Uygulama içinden "BACKUP ALL" komutu seçilerek sunucu içerisindeki tüm verilerin (kullanıcı verileri, yüklenen uygulamalar, destek dosyaları vb.) LTO’ya aktarılması başlatıldı. İşlem yaklaşık 2 saat sürdü ve tamamlandığında, sunucudaki tüm veri başarılı bir şekilde LTO üzerine yedeklendi.
+
+Yedekleme süreci sırasında, başka bir firmaya ait sunucuda LTO kasetini algılamama problemi tespit edildi. Yapılan incelemede, bu sorunun BackPlane adlı donanım bileşeninden kaynaklandığı görüldü. BackPlane'in elektriksel bir arızası nedeniyle akım iletimi sağlanamıyor, bu da Tape Drive'ın düzgün çalışmasını engelliyordu.
+
+Sorunun çözümü için BackPlane donanımı değiştirilerek yeniden yapılandırıldı. Onarım sonrasında sunucu ile LTO cihazı arasında bağlantı sağlıklı bir şekilde kuruldu ve ilgili sistem, tekrar yedekleme işlemi yapabilir duruma getirildi.
+
+Bu süreçte hem yedekleme teknolojileri (LTO) hem de donanım temelli hata tespiti ve çözümü hakkında uygulamalı tecrübeler kazanıldı.
+
+GÜN 5
+
+Bugünkü staj faaliyetlerinde, ofisimize yurtdışından gelen AS/400 sunucularının kutu açılış işlemleri gerçekleştirildi. İlk olarak kutu içerikleri kontrol edilerek, eksik parça, disk ya da kurulum CD’si olup olmadığı denetlendi. Yapılan incelemelerde herhangi bir eksik donanıma rastlanmadı; gönderilen tüm bileşenlerin eksiksiz olduğu görüldü.
+
+Sunucular ilk kez çalıştırılarak temel sistem başlatmaları yapıldı. Gerekli donanım konfigürasyonları gerçekleştirildi ve lisans anahtarları (Licence Key) sisteme girildi. Genellikle gönderilen sunucular, uygulama ve yazılımlar olmadan gelirken; bu partideki cihazlarda temel uygulamaların önceden yüklenmiş olduğu gözlemlendi.
+
+Ancak bazı programlar Türkçe dil paketiyle yüklendiği için, sistem dili ihtiyaca uygun olarak İngilizce'ye çevrildi. Bu sayede uygulama uyumluluğu ve kullanıcı arayüzü bütünlüğü sağlanmış oldu.
+
+Yeni gelen Dell marka sunucular, ilk kez devreye alındı ve kurulum adımları dikkatle uygulandı. Ön tanımlı (default) şifre güvenlik nedeniyle değiştirildi. Şifre değişikliği sırasında yaşanan teknik bir sorun nedeniyle cihaz fabrika ayarlarına döndürülerek kurulum süreci yeniden başlatıldı.
+
+Kurulum tamamlandıktan sonra, sunucuya statik IP adresi atanarak şirketin yerel ağına (LAN - Local Area Network) bağlanması sağlandı. Ağ bağlantısı sonrası, cihaz Active Directory (AD) ortamına dâhil edilerek şirketin sistem altyapısına entegre edildi.
+
+Bu süreçte hem donanım kurulumu, hem de sistem ve ağ yapılandırmaları hakkında kapsamlı ve uygulamalı bilgiler edinildi.
+
+GÜN 6
+
+Bir önceki gün başlanılan sistem yapılandırma işlemlerine bu gün devam edilmiştir. İlk olarak, sunucu üzerinde yer alan network portlarından biri aktif hâle getirilmiş ve bu porta statik bir IP adresi atanmıştır. Aktif edilen port üzerinden sunucu, switch aracılığıyla şirketin yerel ağına (LAN) başarılı bir şekilde entegre edilmiştir.
+
+Alan adı erişim yapılandırmaları kapsamında, şirket genelinde firat.com alan adına tüm kullanıcıların erişimi sağlanmışken, dd.firat.com alan adına yalnızca yerel ağdan erişim izni tanımlanmıştır. İlgili sunucunun dd.firat.com adresine erişim sağlayabilmesi için gerekli DNS ve erişim ayarları yapılmıştır.
+
+Yazılım geliştirme sürecinde, mevcut uygulamaya yazar ekleme ve güncelleme özellikleri başarıyla entegre edilmiştir. Kullanıcıların yeni yazar bilgisi girmesi ve mevcut bilgileri güncelleyebilmesi sağlanmıştır.
+
+Yazar silme işlemi için gereken ön kontrol yapısı taslak olarak hazırlanmıştır. Bu kapsamda, silinmek istenen yazarın veritabanındaki kitaplar tablosunda ilişkili kaydının olup olmadığı kontrol edilecek şekilde bir mantık yapısı oluşturulmuştur. Bu, veri bütünlüğü açısından önemli bir adımdır.
+
+Ayrıca, uygulamanın kullanıcı arayüzüne dair görsel düzenlemeler yapılmıştır. Form tasarımı geliştirilmiş; özellikle butonların aynı görsel stilde görünmesi için Photoshop CC 2019 kullanılarak özel tasarımlar hazırlanmıştır. Bu sayede kullanıcı arayüzünde bütünlük sağlanmış, görsel kalite artırılmıştır.
+
+Günün sonunda yapılan tüm yapılandırmalar test edilmiş ve başarıyla tamamlanmıştır.
+
+GÜN 7
+
+Bugünkü staj faaliyetlerinde, kullanıcı tarafından girilen harflere göre ilgili tablonun ilgili kolonundan uygun verilerin filtrelenerek DataGridView bileşeninde dinamik şekilde gösterilmesini sağlayan kodlar geliştirildi. Bu işlevsellik, kullanıcı deneyimini artırmak amacıyla canlı arama (live search) özelliğiyle entegre edildi.
+
+Tüm tabloların bu arama işlemini ortak bir yapı üzerinden gerçekleştirebilmesi için, SearchByPrompt.cs isimli sınıf oluşturuldu. Bu sınıfın searchByPrompt örneği static olarak tanımlandı ve diğer sınıflar tarafından doğrudan erişilebilir hâle getirildi.
+
+Özellikle TableName == "books" (kitaplar tablosu) durumunda daha karmaşık bir SQL komutu kullanılması gerekti. Bunun sebebi, kitaplar tablosunun Foreign Key (Yabancı Anahtar) alanları içermesidir. Bu alanlar doğrudan ID değeri tutsa da, kullanıcıya anlamlı veri yansıtmak için ilgili Foreign Key'in bağlı olduğu tablodaki Primary Key'e karşılık gelen açıklayıcı veri (örneğin yazar ID yerine yazar adı) çekilerek gösterilmesi sağlandı.
+
+Bu veri işlemleri için MySqlDataAdapter kullanılarak veriler çekildi ve bir DataTable (dt) nesnesine aktarıldı. Ardından bu tablo, veriyi talep eden sınıfa return edilerek bağlı DataGridView’e yansıtıldı.
+
+Ayrıca, kitap türlerinin sisteme eklenmesi ve güncellenmesi için gerekli modül tamamlandı. Bu işlemler kullanıcı dostu bir arayüzle gerçekleştirilebilir hâle getirildi. Kitap türü silme işlemi için de ön kontrol taslağı hazırlanarak, ilgili türün kitaplar tablosunda kullanılıp kullanılmadığına dair kontrol mekanizması geliştirildi. Bu sayede veri bütünlüğü korunmuş oldu.
+
+Kullanıcı arayüzünde yapılan geliştirmeler kapsamında form tasarımları yenilendi. Photoshop CC 2019 programı kullanılarak butonların görsel bütünlüğü sağlandı ve tüm butonlar aynı stil ve formatta olacak şekilde düzenlendi.
+
+Bu çalışmalar sayesinde hem veritabanı ilişkileri hem de kullanıcı arayüzü açısından önemli işlevler başarıyla geliştirilmiş oldu.
+
+GÜN 8
+
+Bugünkü staj çalışmaları kapsamında, uygulamanın Yazarlar (Authors) formuna dinamik bir arama özelliği entegre edilmiştir. Bu sayede kullanıcıların, yazar adına göre filtreleme yaparak aradıkları yazarlara daha hızlı ve kolay ulaşmaları sağlanmıştır.
+
+Arama işlemi için önceden oluşturulan searchByPrompt() metodu kullanılmıştır. Bu metodun döndürdüğü DataTable nesnesi, ilgili forma alınarak DataGridView bileşenine Veri Kaynağı (DataSource) olarak atanmıştır. Böylece arama sonuçları anlık olarak tabloya yansıtılmıştır.
+
+Aynı işlem, BookTypes.cs formu için de uygulanmış ve kitap türlerini arama özelliği başarıyla eklenmiştir. Kullanıcıların kitap türlerini anahtar kelimelere göre filtreleyerek bulabilmesi sağlanmıştır.
+
+Her iki formda da searchByPrompt() metodunun yeniden kullanılabilir yapısı sayesinde kod tekrarı önlenmiş, yazılımın modülerliği ve sürdürülebilirliği artırılmıştır.
+
+GÜN 9
+
+Projeye öğrenci ekleme, silme ve güncelleme gibi temel CRUD (Create, Read, Update, Delete) işlemleri eklenerek başlanmıştır. Kullanıcı arayüzü için form tasarımı gerçekleştirilmiş, kullanıcı deneyimini artırmak amacıyla butonlara Photoshop programı kullanılarak özel ikonlar entegre edilmiştir.
+
+Ayrıca, öğrenciler tablosunda çoklu kritere dayalı arama özelliği geliştirilmiştir. Bu özellik sayesinde kullanıcı, ComboBox üzerinden aramak istediği sütunu seçebilmekte ve ilgili sütuna göre filtreleme yapılabilmektedir. ComboBox'ta seçilen sütun ismi string olarak alınmakta ve FindStudentByPrompt metoduna parametre olarak aktarılmaktadır. Bu metod aracılığıyla SearchByPrompt.cs sınıfındaki searchByPrompt adlı statik metoda yönlendirme yapılmakta ve ilgili kriterlere uygun veriler veritabanından çekilerek kullanıcıya listelenmektedir.
+
+   
