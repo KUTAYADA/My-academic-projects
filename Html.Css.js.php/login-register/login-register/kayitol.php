@@ -1,0 +1,76 @@
+<?php $page = "register"; require_once 'includes/config.php'; require_once 'includes/header.php'; include 'includes/post.php';?>
+<style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: #f4f4f4;
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .form-kapsayici {
+      background: white;
+      padding: 40px;
+      border-radius: 10px;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 400px;
+    }
+
+    .form-kapsayici h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    input[type="text"], input[type="email"], input[type="password"] {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0 20px 0;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      box-sizing: border-box;
+    }
+
+    button {
+      width: 100%;
+      background-color: #4CAF50;
+      color: white;
+      padding: 12px;
+      border: none;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    .link {
+      text-align: center;
+      margin-top: 15px;
+    }
+
+    .link a {
+      text-decoration: none;
+      color: #4CAF50;
+    }
+  </style>
+  <div class="form-kapsayici">
+    <h2>Kayıt Ol</h2>
+    <form action="kayitol.php" method="POST">
+      <input type="hidden" name="form_type" value="register">
+      <input name="username" type="text" placeholder="Ad Soyad" required>
+      <input name="email" type="email" placeholder="E-posta" required>
+      <input name="password" type="password" placeholder="Şifre" required>
+      <button type="submit">Kayıt Ol</button>
+    </form>
+    <div class="link">
+      <p>Zaten hesabınız var mı? <a href="giris.php">Giriş Yap</a></p>
+    </div>
+  </div>
+</body>
+</html>

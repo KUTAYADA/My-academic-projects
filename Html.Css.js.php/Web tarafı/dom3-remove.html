@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <title>Alışveriş Sepeti</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #f9f9f9;
+      font-family: Arial, sans-serif;
+    }
+
+    #icerik_kutusu {
+      background-color: #fff;
+      padding: 20px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      text-align: center;
+      width: 300px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    h1 {
+      margin-top: 0;
+      font-size: 1.5em;
+      color: #333;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 15px 0;
+      text-align: left;
+    }
+
+    ul li {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px;
+      background-color: #f0f0f0;
+      margin-bottom: 5px;
+      border-radius: 3px;
+    }
+
+    .silme_butonu {
+      padding: 5px 10px;
+      font-size: 12px;
+      border: none;
+      background-color: #e74c3c;
+      color: white;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+
+    .silme_butonu:hover {
+      background-color: #c0392b;
+    }
+  </style>
+</head>
+<body>
+  <div id="icerik_kutusu">
+    <h1>Alışveriş Sepeti</h1>
+    <ul id="sepet_ogeleri">
+      <li>Elma <button class="silme_butonu">Sil</button></li>
+      <li>Ekmek <button class="silme_butonu">Sil</button></li>
+      <li>Süt <button class="silme_butonu">Sil</button></li>
+      <li>Peynir <button class="silme_butonu">Sil</button></li>
+      <li>Yumurta <button class="silme_butonu">Sil</button></li>
+    </ul>
+  </div>
+
+  <script>
+    // Tüm silme butonlarını seç
+    var silme_butonlari = document.getElementsByClassName('silme_butonu');
+
+    // Her bir buton için tıklama olayını tanımla
+    for (var i = 0; i < silme_butonlari.length; i++) {
+      silme_butonlari[i].onclick = function() {
+        var liste_ogesi = this.parentElement; // Butonun bulunduğu liste öğesi
+        liste_ogesi.parentElement.removeChild(liste_ogesi); // Liste öğesini kaldır
+      };
+    }
+  </script>
+</body>
+</html>

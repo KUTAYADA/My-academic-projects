@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <title>Kutu Oyunu</title>
+  <style>
+    body {
+      font-family: Arial;
+      text-align: center;
+      background-color: #f0f0f0;
+      margin: 0;
+      padding: 20px;
+    }
+
+    #oyun_alani {
+      margin-top: 20px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .kutu {
+      width: 60px;
+      height: 60px;
+      background-color: green;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 10px;
+      font-weight: bold;
+    }
+
+    button, select {
+      padding: 10px 20px;
+      margin: 10px;
+      font-size: 16px;
+    }
+
+    #bilgilendirme {
+      font-size: 18px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Tıklama Hızı Oyunu</h1>
+
+  <!-- Zorluk seçimi -->
+  <label for="zorluk_secimi">Zorluk Seç:</label>
+  <select id="zorluk_secimi">
+    <option value="kolay">Kolay (10 kutu)</option>
+    <option value="normal">Normal (30 kutu)</option>
+    <option value="zor">Zor (60 kutu)</option>
+  </select>
+
+  <!-- Butonlar -->
+  <button id="baslat_butonu">Oyunu Başlat</button>
+  <button id="kutu_ekle_butonu" disabled>Kutu Ekle</button>
+
+  <!-- Bilgilendirme -->
+  <div id="bilgilendirme">
+    Skor: <span id="skor">0</span><br>
+    Hedef: <span id="hedef">-</span> kutu<br>
+    Süre: <span id="sure">10</span> saniye
+  </div>
+
+  <!-- Oyun kutularının bulunduğu alan -->
+  <div id="oyun_alani"></div>
+
+  <script>
+    var baslatButonu = document.getElementById("baslat_butonu");
+    var kutuEkleButonu = document.getElementById("kutu_ekle_butonu");
+    var zorlukSecimi = document.getElementById("zorluk_secimi");
+    var skorAlani = document.getElementById("skor");
+    var hedefAlani = document.getElementById("hedef");
+    var sureAlani = document.getElementById("sure");
+    var oyunAlani = document.getElementById("oyun_alani");
+
+    var skor = 0;
+    var hedef = 0;
+    var sure = 10;
+    var zamanlayici = null;
+
+    var zorluklar = {
+      kolay: 10,
+      normal: 30,
+      zor: 60
+    };
+
+    function oyunuSifirla() {
+      skor = 0;
+      sure = 10;
+      oyunAlani.innerHTML = "";
+      skorAlani.textContent = skor;
+      sureAlani.textContent = sure;
+      hedefAlani.textContent = hedef;
+      kutuEkleButonu.disabled = false;
+    }
+
+    function sureyiGuncelle() {
+      sure--;
+      sureAlani.textContent = sure;
+
+      if (sure <= 0) {
+        clearInterval(zamanlayici);
+        kutuEkleButonu.disabled = true;
+
+        if (skor >= hedef) {
+          alert("Tebrikler! Hedefe ulaştınız.");
+        } else {
+          alert("Süre doldu. Lütfen tekrar deneyin.");
+        }
+      }
+    }
+
+    baslatButonu.addEventListener("click", function() {
+      var secilenZorluk = zorlukSecimi.value;
+      hedef = zorluklar[secilenZorluk];
+      oyunuSifirla();
+
+      hedefAlani.textContent = hedef;
+
+      clearInterval(zamanlayici);
+      zamanlayici = setInterval(sureyiGuncelle, 1000);
+    });
+
+    kutuEkleButonu.addEventListener("click", function() {
+      skor++;
+      skorAlani.textContent = skor;
+
+      var yeniKutu = document.createElement("div");
+      yeniKutu.className = "kutu";
+      yeniKutu.textContent = skor;
+      oyunAlani.appendChild(yeniKutu);
+
+      if (skor >= hedef) {
+        clearInterval(zamanlayici);
+        kutuEkleButonu.disabled = true;
+        alert("Harika! Hedefe ulaştınız.");
+      }
+    });
+  </script>
+</body>
+</html>

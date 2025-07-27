@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Uzay Görevi - Do While Döngüsü</title>
+    <style>
+        body {
+            font-family: 'Courier New', monospace;
+            background: radial-gradient(circle, #000428, #004e92);
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        #oyunAlani {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.6);
+            text-align: center;
+            width: 400px;
+        }
+        button, input[type="number"] {
+            padding: 10px 20px;
+            margin: 10px 0;
+            font-size: 16px;
+            border-radius: 8px;
+            border: none;
+        }
+        button {
+            background-color: #1e90ff;
+            color: white;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0d6efd;
+        }
+        #sonuclar {
+            text-align: left;
+            margin-top: 15px;
+            max-height: 200px;
+            overflow-y: auto;
+            background: rgba(0, 0, 0, 0.4);
+            padding: 10px;
+            border-radius: 10px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div id="oyunAlani">
+        <h1>Uzay Görevi</h1>
+        <p>1 ile 30 arasında rastgele bir gezegene iniş yapman gerekiyor. Doğru gezegeni bulana kadar dene!</p>
+        <input type="number" id="tahminKutusu" placeholder="Gezegen numarası">
+        <button id="tahminButonu">İniş Yap</button>
+        <div id="sonuclar">Görev raporu burada görünecek.</div>
+    </div>
+
+    <script>
+        const tahminButonu = document.getElementById('tahminButonu');
+        const tahminKutusu = document.getElementById('tahminKutusu');
+        const sonuclar = document.getElementById('sonuclar');
+
+        const hedefGezegen = Math.floor(Math.random() * 30) + 1;
+        let denemeSayisi = 0;
+        let basariliMi = false;
+        let raporlar = [];
+
+        tahminButonu.addEventListener('click', () => {
+            let tahmin;
+            do {
+                tahmin = Number(tahminKutusu.value);
+                denemeSayisi++;
+
+                if (tahmin < hedefGezegen) {
+                    raporlar.push(`${denemeSayisi}. deneme: Gezegen ${tahmin} (Daha yüksek bir numara dene)`);
+                    break;
+                } else if (tahmin > hedefGezegen) {
+                    raporlar.push(`${denemeSayisi}. deneme: Gezegen ${tahmin} (Daha düşük bir numara dene)`);
+                    break;
+                } else if (tahmin === hedefGezegen) {
+                    raporlar.push(`${denemeSayisi}. deneme: Gezegen ${tahmin} (Başarılı iniş)`);
+                    basariliMi = true;
+                    break;
+                } else {
+                    raporlar.push(`${denemeSayisi}. deneme: Geçersiz giriş`);
+                    break;
+                }
+            } while (!basariliMi);
+
+            sonuclar.innerHTML = '<strong>Görev Raporları:</strong><br>' + raporlar.join('<br>');
+
+            if (basariliMi) {
+                tahminButonu.disabled = true;
+                tahminKutusu.disabled = true;
+            }
+        });
+    </script>
+</body>
+</html>

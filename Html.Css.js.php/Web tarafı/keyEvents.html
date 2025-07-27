@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <title>Tuş Olayları Uygulaması</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      margin: 0;
+      padding: 20px;
+      position: relative;
+    }
+    h1 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 10px;
+    }
+
+    #ozelTuslar {
+      position: fixed;
+      top: 10px;
+      left: 10px;
+      background: #fff;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      padding: 10px;
+      box-shadow: 0 0 5px rgba(0,0,0,0.1);
+    }
+
+    .gosterge {
+      margin: 4px 0;
+      padding: 4px 8px;
+      border-radius: 4px;
+      color: #fff;
+      font-size: 14px;
+      width: 100px;
+      text-align: center;
+    }
+
+    #durum {
+      text-align: center;
+      font-size: 18px;
+      margin-top: 60px;
+      margin-bottom: 20px;
+    }
+
+    #durum p {
+      margin: 6px 0;
+    }
+
+    #olayTipi {
+      font-weight: bold;
+    }
+
+    #olayTipi.basildi {
+      color: green;
+    }
+
+    #olayTipi.birakildi {
+      color: red;
+    }
+
+    #asciiDegeri {
+      color: blue;
+      font-weight: bold;
+    }
+
+    #ikilikDeger {
+      background: black;
+      color: green;
+      display: inline-block;
+      padding: 2px 4px;
+      border-radius: 4px;
+      font-family: monospace;
+      font-size: 16px;
+    }
+
+    #gunluk {
+      background: #fff;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      padding: 20px;
+      height: 300px;
+      width: 80%;
+      margin: 0 auto 40px;
+      overflow-y: auto;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    .olay {
+      padding: 8px 12px;
+      margin-bottom: 8px;
+      border-left: 4px solid #007BFF;
+      background: #eef6ff;
+      font-size: 15px;
+      color: #333;
+    }
+
+    .basildi { border-left-color: green; }
+    .birakildi { border-left-color: orange; }
+  </style>
+</head>
+<body>
+  <h1>Tuş Olayları Uygulaması</h1>
+
+  <div id="ozelTuslar">
+    <div id="caps"  class="gosterge">BÜYÜK HARF</div>
+    <div id="shift" class="gosterge">SHIFT</div>
+    <div id="kontrol"  class="gosterge">KONTROL</div>
+    <div id="alt"   class="gosterge">ALT</div>
+    <div id="altgr" class="gosterge">ALT GR</div>
+  </div>
+
+  <div id="durum">
+    <p id="olayTipi">—</p>
+    <p>ASCII Kodu: <span id="asciiDegeri">—</span></p>
+    <p>Binary Kod: <span id="ikilikDeger">—</span></p>
+  </div>
+
+  <div id="gunluk"></div>
+
+  <script>
+    var buyukHarf = document.getElementById('caps');
+    var kaydir = document.getElementById('shift');
+    var kontrol = document.getElementById('kontrol');
+    var alternatif = document.getElementById('alt');
+    var alternatifGrup = document.getElementById('altgr');
+
+    function ozelTusGuncelle(e) {
+      buyukHarf.style.backgroundColor = e.getModifierState('CapsLock') ? 'green' : 'red';
+      kaydir.style.backgroundColor = e.getModifierState('Shift') ? 'green' : 'red';
+      kontrol.style.backgroundColor = e.getModifierState('Control') ? 'green' : 'red';
+      alternatif.style.backgroundColor = e.getModifierState('Alt') ? 'green' : 'red';
+      alternatifGrup.style.backgroundColor = e.getModifierState('AltGraph') ? 'green' : 'red';
+    }
+
+    function sekizBitIkilik(sayi) {
+      var ikilik = sayi.toString(2);
+      while (ikilik.length < 8) {
+        ikilik = "0" + ikilik;
+      }
+      return ikilik;
+    }
+
+    function olayiGunlugeEkle(tip, tus, ascii, ikilik, sinifAdi) {
+      var kutu = document.createElement('div');
+      kutu.className = 'olay ' + sinifAdi;
+      kutu.textContent = tip + ' — Tuş: "' + tus + '", ASCII: ' + ascii + ', Binary: ' + ikilik;
+      var gunluk = document.getElementById('gunluk');
+      gunluk.appendChild(kutu);
+      gunluk.scrollTop = gunluk.scrollHeight;
+    }
+
+    document.addEventListener('keydown', function(e) {
+      if (e.repeat) return;
+
+      ozelTusGuncelle(e);
+
+      var olayMetni = document.getElementById('olayTipi');
+      olayMetni.textContent = 'Tuşa basıldı';
+      olayMetni.className = 'basildi';
+
+      var kod = (e.key === 'Enter') ? 13 : (e.key === ' ' ? 32 : (e.key.length === 1 ? e.key.charCodeAt(0) : e.keyCode));
+      document.getElementById('asciiDegeri').textContent = kod;
+      document.getElementById('ikilikDeger').textContent = sekizBitIkilik(kod);
+
+      var tusAdi = (e.key === ' ') ? 'Boşluk' : e.key;
+      olayiGunlugeEkle('Tuş Basıldı', tusAdi, kod, sekizBitIkilik(kod), 'basildi');
+    });
+
+    document.addEventListener('keyup', function(e) {
+      ozelTusGuncelle(e);
+
+      var olayMetni = document.getElementById('olayTipi');
+      olayMetni.textContent = 'Tuş bırakıldı';
+      olayMetni.className = 'birakildi';
+
+      var kod = (e.key === 'Enter') ? 13 : (e.key === ' ' ? 32 : (e.key.length === 1 ? e.key.charCodeAt(0) : e.keyCode));
+      document.getElementById('asciiDegeri').textContent = kod;
+      document.getElementById('ikilikDeger').textContent = sekizBitIkilik(kod);
+
+      var tusAdi = (e.key === ' ') ? 'Boşluk' : e.key;
+      olayiGunlugeEkle('Tuş Bırakıldı', tusAdi, kod, sekizBitIkilik(kod), 'birakildi');
+    });
+  </script>
+</body>
+</html>

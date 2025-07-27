@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Form Olayları</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f0f0;
+      margin: 0;
+      height: 100vh;
+      position: relative;
+    }
+
+    #form_alani {
+      background-color: #fff;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      text-align: center;
+      width: 100%;
+      max-width: 400px;
+      margin: auto;
+      position: relative;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    .girdi_alani, select {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      font-size: 16px;
+    }
+
+    #gonder_butonu {
+      padding: 10px 20px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    #gonder_butonu:hover {
+      background-color: #45a049;
+    }
+
+    #bilgilendirme {
+      margin-top: 15px;
+      font-weight: bold;
+    }
+
+    #bilgilendirme.hata {
+      color: red;
+    }
+
+    #bilgilendirme.basarili {
+      color: green;
+    }
+
+    #kayit_defteri {
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
+      width: 250px;
+      max-height: 60vh;
+      overflow-y: auto;
+      background: white;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      padding: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    #kayit_defteri h3 {
+      margin: 0 0 10px;
+      font-size: 16px;
+    }
+
+    #kayit_defteri .kayit_satiri {
+      margin-bottom: 8px;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <div id="form_alani">
+    <h2>Form Olayları</h2>
+    <input type="text" id="ad_soyad_alani" class="girdi_alani" placeholder="Ad ve Soyadınızı girin">
+    <input type="password" id="sifre_alani" class="girdi_alani" placeholder="Şifrenizi girin">
+    <input type="email" id="eposta_alani" class="girdi_alani" placeholder="E-posta adresinizi girin">
+    <select id="yas_secimi" class="girdi_alani">
+      <option value="" disabled selected>Yaşınızı seçin</option>
+    </select>
+    <button id="gonder_butonu">Gönder</button>
+    <p id="bilgilendirme"></p>
+  </div>
+
+  <div id="kayit_defteri">
+    <h3>Kayıtlar</h3>
+  </div>
+
+  <script>
+    var adSoyadAlani       = document.getElementById('ad_soyad_alani');
+    var sifreAlani         = document.getElementById('sifre_alani');
+    var epostaAlani        = document.getElementById('eposta_alani');
+    var yasSecimi          = document.getElementById('yas_secimi');
+    var gonderButonu       = document.getElementById('gonder_butonu');
+    var bilgilendirmeAlani = document.getElementById('bilgilendirme');
+    var kayitDefteri       = document.getElementById('kayit_defteri');
+
+    var engellenmisEpostalar = new Set();
+
+    // Yaş seçeneklerini oluştur (10-64 ve ardından 65+)
+    for (var i = 10; i < 65; i++) {
+      var secenek = document.createElement('option');
+      secenek.value = i;
+      secenek.textContent = i;
+      yasSecimi.appendChild(secenek);
+    }
+    var altmisBesUzeri = document.createElement('option');
+    altmisBesUzeri.value = '65+';
+    altmisBesUzeri.textContent = '65+';
+    yasSecimi.appendChild(altmisBesUzeri);
+
+    // Gönderme butonu tıklanınca form doğrulaması
+    gonderButonu.addEventListener('click', function () {
+      bilgilendirmeAlani.className = '';
+
+      if (!adSoyadAlani.value.trim()) {
+        bilgilendirmeAlani.textContent = 'Hata: Ad ve soyad boş olamaz';
+        bilgilendirmeAlani.classList.add('hata');
+        return;
+      }
+
+      if (!sifreAlani.value) {
+        bilgilendirmeAlani.textContent = 'Hata: Lütfen şifre girin';
+        bilgilendirmeAlani.classList.add('hata');
+        return;
+      }
+
+      if (adSoyadAlani.value === sifreAlani.value) {
+        bilgilendirmeAlani.textContent = 'Hata: Şifre ad ve soyad ile aynı olamaz';
+        bilgilendirmeAlani.classList.add('hata');
+        return;
+      }
+
+      if (epostaAlani.value.indexOf('@') === -1) {
+        bilgilendirmeAlani.textContent = 'Hata: E-posta eksik veya hatalı';
+        bilgilendirmeAlani.classList.add('hata');
+        return;
+      }
+
+      if (!yasSecimi.value) {
+        bilgilendirmeAlani.textContent = 'Hata: Yaşınızı seçin';
+        bilgilendirmeAlani.classList.add('hata');
+        return;
+      }
+
+      if (engellenmisEpostalar.has(epostaAlani.value)) {
+        bilgilendirmeAlani.textContent = 'Hata: Yaşınızı 18’den büyük göstermek istediniz. Lütfen böyle yapmayın.';
+        bilgilendirmeAlani.classList.add('hata');
+        return;
+      }
+
+      var sayisalYas = parseInt(yasSecimi.value, 10);
+      if (!isNaN(sayisalYas) && sayisalYas < 18) {
+        engellenmisEpostalar.add(epostaAlani.value);
+        bilgilendirmeAlani.textContent = 'Hata: Yaşınız (' + yasSecimi.value + ') 18’den küçük';
+        bilgilendirmeAlani.classList.add('hata');
+        return;
+      }
+
+      bilgilendirmeAlani.textContent = 'Başarıyla onaylandı';
+      bilgilendirmeAlani.classList.add('basarili');
+
+      var kayitSatiri = document.createElement('div');
+      kayitSatiri.className = 'kayit_satiri';
+      kayitSatiri.textContent = 'Ad Soyad: ' + adSoyadAlani.value +
+                                ', E-posta: ' + epostaAlani.value +
+                                ', Yaş: ' + yasSecimi.value;
+      kayitDefteri.appendChild(kayitSatiri);
+    });
+  </script>
+</body>
+</html>

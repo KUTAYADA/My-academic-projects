@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <title>Fare Olayları Uygulaması</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      margin: 0;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+    #durumBilgisi {
+      text-align: center;
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+
+    #koordinatKutusu {
+      width: 200px;
+      margin: 0 auto 20px;
+      padding: 10px;
+      background: #fff;
+      border: 2px solid #007BFF;
+      border-radius: 8px;
+      font-size: 20px;
+      font-weight: bold;
+      display: flex;
+      justify-content: space-around;
+    }
+    #koordinatKutusu .x { color: green; }
+    #koordinatKutusu .y { color: red; }
+
+    #olayGecmisi {
+      background: #fff;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      padding: 20px;
+      height: 400px;
+      width: 80%;
+      margin: 0 auto 40px;
+      overflow-y: auto;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    .olay {
+      padding: 8px 12px;
+      margin-bottom: 8px;
+      border-left: 4px solid #007BFF;
+      background: #eef6ff;
+      font-size: 15px;
+      color: green;
+    }
+    .tek-tiklama   { border-left-color: blue; }
+    .cift-tiklama  { border-left-color: red; }
+    .sag-tiklama   { border-left-color: orange; }
+    .tekerlek-tiklama { border-left-color: purple; }
+
+    #tekerlekDurumu {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 160px;
+      height: 60px;
+      background: #aaa;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      color: #fff;
+      box-shadow: 0 0 8px rgba(0,0,0,0.2);
+    }
+
+    #tiklamaDurumu {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      min-width: 160px;
+      height: 60px;
+      background: #888;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      color: #fff;
+      box-shadow: 0 0 8px rgba(0,0,0,0.2);
+    }
+  </style>
+</head>
+<body>
+  <h1>Fare Olayları Takip Uygulaması</h1>
+  <div id="durumBilgisi">
+    <p>Fare Konumu:</p>
+  </div>
+
+  <div id="koordinatKutusu">
+    <span class="x">X: 0</span>
+    <span class="y">Y: 0</span>
+  </div>
+
+  <div id="olayGecmisi"></div>
+  <div id="tekerlekDurumu">Tekerlek Bekleniyor...</div>
+  <div id="tiklamaDurumu">Tıklama Bekleniyor...</div>
+
+  <script>
+    var konumX = document.querySelector('#koordinatKutusu .x');
+    var konumY = document.querySelector('#koordinatKutusu .y');
+    var olayKutusu = document.getElementById('olayGecmisi');
+    var tekerlekKutusu = document.getElementById('tekerlekDurumu');
+    var tiklamaKutusu = document.getElementById('tiklamaDurumu');
+    var tiklamaSayaci = null;
+
+    function olayKaydet(olayAdi, olayNesnesi, sinifAdi) {
+      if (!sinifAdi) {
+        sinifAdi = '';
+      }
+      var yeniOge = document.createElement('div');
+      yeniOge.className = 'olay ' + sinifAdi;
+      yeniOge.textContent = olayAdi + ' - X: ' + olayNesnesi.clientX + ', Y: ' + olayNesnesi.clientY;
+      olayKutusu.appendChild(yeniOge);
+      olayKutusu.scrollTop = olayKutusu.scrollHeight;
+    }
+
+    document.addEventListener('mousemove', function(olay) {
+      konumX.textContent = 'X: ' + olay.clientX;
+      konumY.textContent = 'Y: ' + olay.clientY;
+    });
+
+    document.addEventListener('click', function(olay) {
+      if (olay.detail !== 1) {
+        return;
+      } else {
+        tiklamaSayaci = setTimeout(function() {
+          olayKaydet('Tıklama', olay, 'tek-tiklama');
+          tiklamaKutusu.style.backgroundColor = 'green';
+          tiklamaKutusu.textContent = 'Tek tıkladınız';
+          tiklamaSayaci = null;
+        }, 250);
+      }
+    });
+
+    document.addEventListener('dblclick', function(olay) {
+      if (tiklamaSayaci !== null) {
+        clearTimeout(tiklamaSayaci);
+        tiklamaSayaci = null;
+      }
+      olayKaydet('Çift Tıklama', olay, 'cift-tiklama');
+      tiklamaKutusu.style.backgroundColor = 'red';
+      tiklamaKutusu.textContent = 'Çift tıkladınız';
+    });
+
+    document.addEventListener('contextmenu', function(olay) {
+      olay.preventDefault();
+      olayKaydet('Sağ Tıklama', olay, 'sag-tiklama');
+      tiklamaKutusu.style.backgroundColor = 'orange';
+      tiklamaKutusu.textContent = 'Sağ tıkladınız';
+    });
+
+    document.addEventListener('mousedown', function(olay) {
+      if (olay.button === 1) {
+        olayKaydet('Tekerlek Tıklama', olay, 'tekerlek-tiklama');
+        tekerlekKutusu.style.backgroundColor = 'purple';
+        tekerlekKutusu.textContent = 'Tekerlek tıklandı';
+      }
+    });
+
+    document.addEventListener('wheel', function(olay) {
+      var yukariMi = olay.deltaY < 0;
+
+      var metin = yukariMi ? 'Tekerlek Yukarı' : 'Tekerlek Aşağı';
+      var renk = yukariMi ? 'blue' : 'red';
+
+      tekerlekKutusu.style.backgroundColor = renk;
+      tekerlekKutusu.textContent = metin;
+    });
+  </script>
+</body>
+</html>

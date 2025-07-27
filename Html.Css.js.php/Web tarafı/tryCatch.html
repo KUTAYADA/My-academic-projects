@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hazine Avı - Try-Catch Örneği</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #ffe259, #ffa751);
+        }
+        #kapsayici {
+            text-align: center;
+            background-color: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.2);
+            width: 350px;
+        }
+        button {
+            padding: 12px 25px;
+            margin: 15px 0;
+            background-color: #ff7f50;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #ff6347;
+        }
+        #sonuc {
+            margin-top: 15px;
+            font-size: 15px;
+            background: #fff4e0;
+            padding: 10px;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div id="kapsayici">
+        <h1>Hazine Avı</h1>
+        <p>Bir define sandığını açmaya çalışıyorsun. Hatalı sandığı seçersen tuzağa düşebilirsin!</p>
+        <button id="acButonu">Sandığı Aç</button>
+        <div id="sonuc">Sonuçlar burada görünecek</div>
+    </div>
+
+    <script>
+        const acButonu = document.getElementById('acButonu');
+        const sonuc = document.getElementById('sonuc');
+
+        acButonu.addEventListener('click', () => {
+            try {
+                // Rasgele hata oluşturma simülasyonu
+                if (Math.random() < 0.5) {
+                    throw new Error('Tuzak aktif hale geldi!');
+                }
+                sonuc.innerHTML = 'Harika! Sandığı başarıyla açtın.';
+            } catch (hata) {
+                sonuc.innerHTML = `Hata yakalandı: ${hata.message}`;
+            } finally {
+                sonuc.innerHTML += '<br>Macera devam ediyor...';
+            }
+        });
+    </script>
+</body>
+</html>

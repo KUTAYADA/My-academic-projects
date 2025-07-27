@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sayı Tahmin Oyunu - While Döngüsü</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        #icerik {
+            text-align: center;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            width: 300px;
+        }
+        button, input {
+            padding: 10px 20px;
+            margin: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #sonuc, #oncekiTahminler {
+            margin-top: 10px;
+        }
+        .dogru {
+            color: green;
+        }
+        .yanlis {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <div id="icerik">
+        <h1>Sayı Tahmin Oyunu</h1>
+        <p>1 ile 100 arasında bir sayı tuttum. Bakalım kaç denemede bulacaksınız?</p>
+        <input type="number" id="tahminGirdisi" placeholder="Tahmininizi giriniz">
+        <button id="tahminDugmesi">Tahmin Et</button>
+        <div id="sonuc">Oyun başladı!</div>
+        <div id="oncekiTahminler"><strong>Önceki Tahminler:</strong> Henüz tahmin yapılmadı.</div>
+    </div>
+
+    <script>
+        const tahminDugmesi = document.getElementById('tahminDugmesi');
+        const sonuc = document.getElementById('sonuc');
+        const tahminGirdisi = document.getElementById('tahminGirdisi');
+        const oncekiTahminler = document.getElementById('oncekiTahminler');
+
+        let hedefSayi = Math.floor(Math.random() * 100) + 1;
+        let tahminSayisi = 0;
+        let tahminListesi = [];
+
+        tahminDugmesi.addEventListener('click', () => {
+            let tahmin = parseInt(tahminGirdisi.value);
+            if (isNaN(tahmin)) {
+                sonuc.innerHTML = 'Lütfen geçerli bir sayı giriniz.';
+                return;
+            }
+
+            tahminSayisi++;
+            let isaret = '';
+
+            if (tahmin < hedefSayi) {
+                sonuc.innerHTML = 'Daha büyük bir sayı deneyiniz. ↑';
+                isaret = '↑';
+            } else if (tahmin > hedefSayi) {
+                sonuc.innerHTML = 'Daha küçük bir sayı deneyiniz. ↓';
+                isaret = '↓';
+            } else {
+                sonuc.innerHTML = `Tebrikler! ${tahminSayisi} denemede doğru bildiniz. Oyun yeniden başlatıldı.`;
+                isaret = '✓';
+                hedefSayi = Math.floor(Math.random() * 100) + 1;
+                tahminSayisi = 0;
+                tahminListesi = [];
+                oncekiTahminler.innerHTML = '<strong>Önceki Tahminler:</strong> Henüz tahmin yapılmadı.';
+                tahminGirdisi.value = '';
+                tahminGirdisi.focus();
+                return;
+            }
+
+            tahminListesi.push(`${tahmin} ${isaret}`);
+            oncekiTahminler.innerHTML = '<strong>Önceki Tahminler:</strong> ' + tahminListesi.join(', ');
+            tahminGirdisi.value = '';
+            tahminGirdisi.focus();
+        });
+    </script>
+</body>
+</html>

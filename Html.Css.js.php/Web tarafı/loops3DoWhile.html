@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kelime Ters Çevirici - Do-While Döngüsü</title>
+    <style>
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            background-color: #e6f7ff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        #anaKutucuk {
+            text-align: center;
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            width: 350px;
+        }
+        input, button {
+            padding: 10px;
+            margin: 10px 0;
+            width: 100%;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #007acc;
+            color: white;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #005f99;
+        }
+        #sonucKutusu, #oncekiSonuclar {
+            margin-top: 15px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <div id="anaKutucuk">
+        <h1>Kelime Ters Çevirici</h1>
+        <p>Bir kelime girin, do-while döngüsü ile ters çevirelim!</p>
+        <input type="text" id="kelimeGirdisi" placeholder="Kelimeyi buraya yazınız">
+        <button id="cevirDugmesi">Ters Çevir</button>
+        <div id="sonucKutusu">Sonuç burada görünecek.</div>
+        <div id="oncekiSonuclar"><strong>Önceki Sonuçlar:</strong> Henüz işlem yapılmadı.</div>
+    </div>
+
+    <script>
+        const cevirDugmesi = document.getElementById('cevirDugmesi');
+        const sonucKutusu = document.getElementById('sonucKutusu');
+        const kelimeGirdisi = document.getElementById('kelimeGirdisi');
+        const oncekiSonuclar = document.getElementById('oncekiSonuclar');
+
+        let oncekiListesi = [];
+
+        cevirDugmesi.addEventListener('click', () => {
+            let kelime = kelimeGirdisi.value.trim();
+            if (kelime === '') {
+                sonucKutusu.innerHTML = 'Lütfen bir kelime giriniz.';
+                return;
+            }
+
+            let tersKelime = '';
+            let i = kelime.length - 1;
+
+            do {
+                tersKelime += kelime[i];
+                i--;
+            } while (i >= 0);
+
+            sonucKutusu.innerHTML = `Ters: ${tersKelime}`;
+
+            oncekiListesi.push(`${kelime} → ${tersKelime}`);
+            oncekiSonuclar.innerHTML = '<strong>Önceki Sonuçlar:</strong> <br>' + oncekiListesi.join('<br>');
+
+            kelimeGirdisi.value = '';
+            kelimeGirdisi.focus();
+        });
+    </script>
+</body>
+</html>

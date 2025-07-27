@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kutay Kaç Boyundadır? - Hata Yakalama</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #d0e6f6, #8fb8e0);
+        }
+        #kapsayici {
+            text-align: center;
+            background-color: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.15);
+            width: 380px;
+        }
+        input {
+            padding: 12px;
+            margin: 10px 0;
+            width: 220px;
+            font-size: 16px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #4a90e2;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #357ab8;
+        }
+        #sonuc {
+            margin-top: 15px;
+            font-size: 16px;
+            background: #e6f0fa;
+            padding: 10px;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div id="kapsayici">
+        <h1>Kutay Kaç Boyundadır?</h1>
+        <p>Kutay'ın boyunu tahmin edin ve cm cinsinden yazın!</p>
+        <input type="text" id="boyGirdisi" placeholder="Boyu yazın (cm)">
+        <button id="kontrolButonu">Cevabı Kontrol Et</button>
+        <div id="sonuc">Sonuç burada gösterilecek</div>
+    </div>
+
+    <script>
+        const kontrolButonu = document.getElementById('kontrolButonu');
+        const boyGirdisi = document.getElementById('boyGirdisi');
+        const sonuc = document.getElementById('sonuc');
+
+        kontrolButonu.addEventListener('click', () => {
+            const giris = boyGirdisi.value;
+            try {
+                if (giris.trim() === '') {
+                    throw new Error('Lütfen bir boy değeri girin!');
+                }
+                const sayi = Number(giris);
+                if (isNaN(sayi)) {
+                    throw new Error('Geçerli bir sayı yazın!');
+                }
+                if (sayi === 195) {
+                    sonuc.innerHTML = 'Evet bildiniz, tebrikler Mukaddes Hocam!';
+                } else if (sayi < 195) {
+                    sonuc.innerHTML = 'Tatlı öğrenciniz daha uzun, tekrar deneyin.';
+                } else {
+                    sonuc.innerHTML = 'O kadar da uzun değil, tekrar deneyin.';
+                }
+            } catch (hata) {
+                sonuc.innerHTML = `Hata: ${hata.message}`;
+            } finally {
+                sonuc.innerHTML += '<br>Tahmin işlemi tamamlandı';
+            }
+        });
+    </script>
+</body>
+</html>

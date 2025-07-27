@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Parça Parça Renk</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background: #f0f0f0;
+    }
+
+    #icerik_kutusu {
+      text-align: center;
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      width: 90%;
+      max-width: 500px;
+    }
+
+    #duzenleyici {
+      width: 100%;
+      min-height: 80px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      padding: 10px;
+      font-size: 16px;
+      color: black;
+      outline: none;
+    }
+
+    button {
+      padding: 10px 20px;
+      margin-top: 15px;
+      background: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #45a049;
+    }
+  </style>
+</head>
+<body>
+  <div id="icerik_kutusu">
+    <h2>Parça Parça Renkli Yazı</h2>
+    <div id="duzenleyici" contenteditable="true" spellcheck="false"
+         placeholder="Buraya yazın…"></div>
+    <button id="renk_degistirme_butonu">Rastgele Renk</button>
+  </div>
+
+  <script>
+    var duzenleyici = document.getElementById('duzenleyici');
+    var renk_degistirme_butonu = document.getElementById('renk_degistirme_butonu');
+
+    // Tarayıcıya CSS ile biçimlendirme yapılacağını bildir
+    document.execCommand('styleWithCSS', false, true);
+
+    // Rastgele renk üretme fonksiyonu
+    function rastgeleRenkUret() {
+      var karakterler = '0123456789ABCDEF';
+      var renk = '#';
+      for (var i = 0; i < 6; i++) {
+        renk += karakterler[Math.floor(Math.random() * 16)];
+      }
+      return renk;
+    }
+
+    // Butona tıklanınca renk değiştir
+    renk_degistirme_butonu.addEventListener('click', function() {
+      duzenleyici.focus();
+      var yeni_renk = rastgeleRenkUret();
+      document.execCommand('foreColor', false, yeni_renk);
+    });
+
+    // Odaklanınca yer tutucu metni temizle
+    duzenleyici.addEventListener('focus', function() {
+      if (duzenleyici.textContent.trim() === 'Buraya yazın…') {
+        duzenleyici.textContent = '';
+      }
+    });
+
+    // Odak kaybolunca boşsa tekrar yer tutucu metni yaz
+    duzenleyici.addEventListener('blur', function() {
+      if (duzenleyici.textContent.trim() === '') {
+        duzenleyici.textContent = 'Buraya yazın…';
+        duzenleyici.style.color = 'black';
+      }
+    });
+
+    // Sayfa açıldığında yer tutucu metni göster
+    duzenleyici.textContent = 'Buraya yazın…';
+    duzenleyici.style.color = 'black';
+  </script>
+</body>
+</html>

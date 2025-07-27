@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Çarpım Tablosu - Döngü ile Gösterim</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        #icerik {
+            text-align: center;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        buton {
+            padding: 10px 20px;
+            margin: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        buton:hover {
+            background-color: #45a049;
+        }
+        #sonuc {
+            margin-top: 10px;
+        }
+        girdi {
+            padding: 10px;
+            margin: 10px;
+            width: 100px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div id="icerik">
+        <h1>Çarpım Tablosu</h1>
+        <input type="number" id="sayiGirdisi" placeholder="Bir sayı giriniz">
+        <button id="butonGoster">Çarpım Tablosunu Göster</button>
+        <div id="sonuc">Sonuçlar burada gösterilecektir</div>
+    </div>
+
+    <script>
+        const butonGoster = document.getElementById('butonGoster');
+        const sonucAlani = document.getElementById('sonuc');
+        const sayiGirdisi = document.getElementById('sayiGirdisi');
+
+        butonGoster.addEventListener('click', () => {
+            const girilenSayi = parseInt(sayiGirdisi.value);
+            if (isNaN(girilenSayi)) {
+                sonucAlani.innerHTML = 'Lütfen geçerli bir sayı giriniz.';
+                return;
+            }
+            let ciktiMetni = '';
+            for (let sayac = 1; sayac <= 10; sayac++) {
+                ciktiMetni += `${girilenSayi} x ${sayac} = ${girilenSayi * sayac}<br>`;
+            }
+            sonucAlani.innerHTML = ciktiMetni;
+        });
+    </script>
+</body>
+</html>

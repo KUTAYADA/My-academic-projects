@@ -1,0 +1,159 @@
+<script type="text/javascript">
+var gk_isXlsx = false; // Global bir değişken tanımlıyor, dosyanın XLSX formatında olup olmadığını belirlemek için kullanılıyor
+var gk_xlsxFileLookup = {}; // XLSX dosyalarının adlarını ve varlığını kontrol etmek için bir obje (lookup table) tanımlıyor
+var gk_fileData = {}; // Dosya verilerini saklamak için bir obje tanımlıyor, dosya adı ve içeriğini eşleştiriyor
+
+function filledCell(cell) { // Hücrenin dolu olup olmadığını kontrol eden bir yardımcı fonksiyon tanımlar
+  return cell !== '' && cell != null; // Hücre boş değilse ve null/undefined değilse true döner, aksi halde false
+}
+
+function loadFileData(filename) { // Belirtilen dosya adındaki veriyi yüklemek için bir fonksiyon tanımlar
+  if (gk_isXlsx && gk_xlsxFileLookup[filename]) { // Dosyanın XLSX formatında olup olmadığını ve lookup tablosunda bulunup bulunmadığını kontrol eder
+    try { // Hata oluşabilecek bir kod bloğunu try-catch ile sarar
+      var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' }); // XLSX kütüphanesi ile dosya verisini (base64 formatında) okur ve bir çalışma kitabı nesnesi oluşturur
+      var firstSheetName = workbook.SheetNames[0]; // Çalışma kitabındaki ilk sayfanın adını alır
+      var worksheet = workbook.Sheets[firstSheetName]; // İlk sayfayı (worksheet) seçer
+
+      // Convert sheet to JSON to filter blank rows
+      var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' }); // Sayfayı JSON formatına çevirir, başlık satırı korunur, boş satırlar hariç tutulur, boş hücreler için varsayılan değer '' atanır
+
+      // Filter out blank rows (rows where all cells are empty, null, or undefined)
+      var filteredData = jsonData.filter(row => row.some(filledCell)); // Tüm hücreleri boş olan satırları filtreler, en az bir dolu hücre içeren satırları tutar
+
+      // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+      var headerRowIndex = filteredData.findIndex((row, index) => // Başlık satırını bulmak için bir sezgisel yöntem kullanır
+        row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length // Mevcut satırın dolu hücre sayısı, bir sonraki satırın dolu hücre sayısından büyük veya eşitse başlık satırı olarak kabul edilir
+      );
+
+      // Fallback
+      if (headerRowIndex === -1 || headerRowIndex > 25) { // Eğer başlık satırı bulunamazsa veya 25. satırdan sonraysa
+        headerRowIndex = 0; // Varsayılan olarak ilk satırı başlık satırı olarak kullanır
+      }
+
+      // Convert filtered JSON back to CSV
+      var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Filtrelenmiş veriyi (başlık satırından itibaren) bir XLSX sayfasına dönüştürür
+      csv = XLSX.utils.sheet_to_csv(csv, { header: 1 }); // Oluşturulan sayfayı CSV formatına çevirir, başlık satırı korunur
+      return csv; // CSV formatındaki veriyi döndürür
+    } catch (e) { // Try bloğunda bir hata oluşursa catch bloğu çalışır
+      console.error(e); // Hatayı konsola yazdırır
+      return ""; // Hata durumunda boş bir string döner
+    }
+  }
+  return gk_fileData[filename] || ""; // Eğer dosya XLSX değilse veya lookup'ta yoksa, dosya verisini (varsa) döner, yoksa boş string döner
+}
+        </script>
+
+<!DOCTYPE html> <!-- HTML5 belgesi olduğunu belirtir -->
+<html lang="tr"> <!-- HTML kök etiketi, dilin Türkçe olduğunu belirtir -->
+<head>
+    <meta charset="UTF-8"> <!-- Karakter kodlamasını UTF-8 olarak ayarlar, Türkçe karakterleri destekler -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Cihaz genişliğine göre ölçeklendirme yapar, mobil uyumluluk sağlar -->
+    <title>JavaScript Ödevi</title> <!-- Sayfanın başlığını tanımlar, tarayıcı sekmesinde görünür -->
+    <style>
+        body {
+            font-family: Arial, sans-serif; /* Yazı tipini Arial olarak ayarlar, yoksa varsayılan sans-serif kullanılır */
+            margin: 0; /* Varsayılan kenar boşluklarını sıfırlar */
+            padding: 20px; /* Sayfaya iç kenar boşluğu ekler */
+            background-color: #f0f0f0; /* Arka plan rengini açık gri yapar */
+        }
+        #container {
+            max-width: 800px; /* Konteynerin maksimum genişliğini 800 piksel yapar */
+            margin: 0 auto; /* Konteyneri yatayda merkeze hizalar */
+            background-color: white; /* Arka plan rengini beyaz yapar */
+            padding: 20px; /* İç kenar boşluğu ekler */
+            border-radius: 10px; /* Köşeleri yuvarlatır */
+            box-shadow: 0 0 10px rgba(0,0,0,0.1); /* Hafif bir gölge efekti ekler */
+        }
+        h1 {
+            text-align: center; /* Başlığı merkeze hizalar */
+            color: #333; /* Başlık rengini koyu gri yapar */
+        }
+        .task {
+            margin: 20px 0; /* Görevler arasında üst ve alt kenar boşluğu ekler */
+            padding: 15px; /* Görev kutusuna iç kenar boşluğu ekler */
+            background-color: #f9f9f9; /* Görev kutusunun arka plan rengini çok açık gri yapar */
+            border-left: 5px solid #4CAF50; /* Sol tarafa yeşil bir kenarlık ekler */
+            border-radius: 5px; /* Köşeleri hafif yuvarlatır */
+        }
+        a {
+            color: #4CAF50; /* Bağlantı rengini yeşil yapar */
+            text-decoration: none; /* Bağlantıların alt çizgisini kaldırır */
+        }
+        a:hover {
+            text-decoration: underline; /* Bağlantının üzerine gelindiğinde alt çizgi ekler */
+        }
+    </style>
+</head>
+<body>
+    <div id="container"> <!-- Ana kapsayıcı div, içeriği gruplamak için kullanılır -->
+        <h1>JavaScript Ödevi: Olaylar ve Döngüler</h1> <!-- Ödevin ana başlığı -->
+        <p>Bu ödevde, JavaScript ile çeşitli olayları ve döngüleri öğrenmek için hazırlanan örnekleri inceleyeceksiniz. Her bir görev için aşağıdaki bağlantıları kullanarak ilgili dosyaları açın ve kodları inceleyin. Her dosyanın içinde yorum satırlarıyla açıklamalar bulunmaktadır.</p> <!-- Ödevin genel açıklaması -->
+
+        <div class="task"> <!-- 1. görev için kapsayıcı div -->
+            <h2>1) Mouse Events</h2> <!-- Görev başlığı -->
+            <p>Fare olaylarını (hareket, tıklama, çift tıklama vb.) algılayan bir uygulama. Fare hareketlerini ve olaylarını ekranda gösterir.</p> <!-- Görev açıklaması -->
+            <a href="mouseEvents.html">Mouse Events Örneğini Aç</a> <!-- İlgili dosyaya bağlantı -->
+        </div>
+
+        <div class="task"> <!-- 2. görev için kapsayıcı div -->
+            <h2>2) Key Events</h2> <!-- Görev başlığı -->
+            <p>Klavye olaylarını (tuşa basma, bırakma) algılayan bir uygulama. Basılan tuşu ve tuş kodunu ekranda gösterir.</p> <!-- Görev açıklaması -->
+            <a href="keyEvents.html">Key Events Örneğini Aç</a> <!-- İlgili dosyaya bağlantı -->
+        </div>
+
+        <div class="task"> <!-- 3. görev için kapsayıcı div -->
+            <h2>3) Form Events</h2> <!-- Görev başlığı -->
+            <p>Form olaylarını (giriş, değişim, gönderim girişimi) algılayan bir uygulama. Kullanıcı girişlerini ve olayları ekranda gösterir.</p> <!-- Görev açıklaması -->
+            <a href="formEvents.html">Form Events Örneğini Aç</a> <!-- İlgili dosyaya bağlantı -->
+        </div>
+
+        <div class="task"> <!-- 4. görev için kapsayıcı div -->
+            <h2>4) Window Events</h2> <!-- Görev başlığı -->
+            <p>Pencere olaylarını (yükleme, yeniden boyutlandırma, kaydırma) algılayan bir uygulama. Pencere boyutlarını ve kaydırma pozisyonunu gösterir.</p> <!-- Görev açıklaması -->
+            <a href="windowEvents.html">Window Events Örneğini Aç</a> <!-- İlgili dosyaya bağlantı -->
+        </div>
+
+        <div class="task"> <!-- 5. görev için kapsayıcı div -->
+            <h2>5) Dialog Boxes</h2> <!-- Görev başlığı -->
+            <p>Farklı türde diyalog kutularını (alert, confirm, prompt) gösteren bir uygulama. Kullanıcı etkileşimlerini ekranda gösterir.</p> <!-- Görev açıklaması -->
+            <a href="dialogBoxes.html">Dialog Boxes Örneğini Aç</a> <!-- İlgili dosyaya bağlantı -->
+        </div>
+
+        <div class="task"> <!-- 6. görev için kapsayıcı div -->
+            <h2>6) Times</h2> <!-- Görev başlığı -->
+            <p>Zamanlayıcılarla (setTimeout, setInterval) çalışan bir uygulama. Zamanla ilgili işlemleri ve bir sayacı ekranda gösterir.</p> <!-- Görev açıklaması -->
+            <a href="times.html">Times Örneğini Aç</a> <!-- İlgili dosyaya bağlantı -->
+        </div>
+
+        <div class="task"> <!-- 7. görev için kapsayıcı div -->
+            <h2>7) DOM İşlemleri</h2> <!-- Görev başlığı -->
+            <p>DOM manipülasyonuyla ilgili örnekler (createElement, update, remove, innerHTML). DOM işlemlerini anlamak için dört ayrı alt görev içerir.</p> <!-- Görev açıklaması -->
+            <ul> <!-- Alt görevler için bir liste -->
+                <li><a href="dom1-createElement.html">7) DOM-1 createElement</a> - Yeni bir element oluşturma</li> <!-- createElement örneği bağlantısı -->
+                <li><a href="dom2-update.html">7) DOM-2 update</a> - Mevcut bir elementi güncelleme</li> <!-- update örneği bağlantısı -->
+                <li><a href="dom3-remove.html">7) DOM-3 remove</a> - Bir elementi kaldırma</li> <!-- remove örneği bağlantısı -->
+                <li><a href="dom4-innerHTML.html">7) DOM-4 innerHTML</a> - innerHTML ile içerik değiştirme</li> <!-- innerHTML örneği bağlantısı -->
+            </ul>
+        </div>
+
+        <div class="task"> <!-- 8. görev için kapsayıcı div -->
+            <h2>8) Döngüler</h2> <!-- Görev başlığı -->
+            <p>Farklı döngü türleriyle (for, while, do-while, break/continue) çalışan örnekler. Döngü yapılarını anlamak için dört ayrı alt görev içerir.</p> <!-- Görev açıklaması -->
+            <ul> <!-- Alt görevler için bir liste -->
+                <li><a href="loops1For.html">8) loops1For</a> - For döngüsü örneği</li> <!-- For döngüsü örneği bağlantısı -->
+                <li><a href="loops2While.html">8) loops2While</a> - While döngüsü örneği</li> <!-- While döngüsü örneği bağlantısı -->
+                <li><a href="loops3DoWhile.html">8) loops3DoWhile</a> - Do-While döngüsü örneği</li> <!-- Do-While döngüsü örneği bağlantısı -->
+                <li><a href="loops4BreakCon.html">8) loops4BreakCon</a> - Break ve Continue kullanımı</li> <!-- Break/Continue örneği bağlantısı -->
+            </ul>
+        </div>
+
+        <div class="task"> <!-- 9. görev için kapsayıcı div -->
+            <h2>9) Try-Catch</h2> <!-- Görev başlığı -->
+            <p>Hata yakalama (try-catch) yapısını gösteren bir uygulama. Hataları yönetmeyi öğrenmek için bir örnek içerir.</p> <!-- Görev açıklaması -->
+            <a href="tryCatch.html">Try-Catch Örneğini Aç</a> <!-- İlgili dosyaya bağlantı -->
+			<a href="tryCatchNewExample.html">Try-Catch2 Örneğini Aç</a> <!-- İlgili dosyaya bağlantı -->
+
+		</div>
+    </div>
+</body>
+</html>

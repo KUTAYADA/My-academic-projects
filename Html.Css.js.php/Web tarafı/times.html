@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Gelişmiş Zamanlayıcılar</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding-top: 40px;
+      margin: 0;
+      background-color: #f0f0f0;
+    }
+    #kapsayici {
+      width: 380px;
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    h1 { text-align: center; margin-bottom: 20px; }
+    .saat { font-size: 1.2em; text-align: center; margin-bottom: 20px; }
+    section { margin-bottom: 25px; }
+    .girdi-satiri { margin: 5px 0; }
+    label { display: inline-block; margin-right: 15px; }
+    input[type="number"] {
+      width: 60px;
+      padding: 5px;
+      margin-left: 5px;
+    }
+    button {
+      padding: 8px 12px;
+      margin: 5px 3px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover { background-color: #45a049; }
+    ul { max-height: 100px; overflow-y: auto; padding-left: 20px; margin-top: 10px; }
+    li { margin-bottom: 5px; }
+    hr { margin: 20px 0; border: 0; height: 1px; background: #ddd; }
+    p { margin: 10px 0; }
+  </style>
+</head>
+<body>
+  <div id="kapsayici">
+    <h1>SAAT</h1>
+    <div class="saat">Canlı Saat: <span id="saatGosterge"></span></div>
+
+    <!-- Geri Sayım -->
+    <section>
+      <h2>Geri Sayım</h2>
+      <div class="girdi-satiri">
+        <label>Yıl: <input type="number" id="girdiYil" min="0" value="0"></label>
+        <label>Ay: <input type="number" id="girdiAy" min="0" max="12" value="0"></label>
+      </div>
+      <div class="girdi-satiri">
+        <label>Gün: <input type="number" id="girdiGun" min="0" max="7" value="0"></label>
+        <label>Saat: <input type="number" id="girdiSaat" min="0" max="24" value="0"></label>
+      </div>
+      <div class="girdi-satiri">
+        <label>Dakika: <input type="number" id="girdiDakika" min="0" max="60" value="0"></label>
+        <label>Saniye: <input type="number" id="girdiSaniye" min="0" max="60" value="0"></label>
+      </div>
+      <button id="butonGeriSayimBaslat">Geri Sayımı Başlat</button>
+      <button id="butonGeriSayimDuraklat">Duraklat / Devam</button>
+      <button id="butonGeriSayimSifirla">Sıfırla</button>
+      <p id="durumGeriSayim">Durum: Bekleniyor</p>
+    </section>
+
+    <hr>
+
+    <!-- Sayaç -->
+    <section>
+      <h2>Sayaç</h2>
+      <button id="butonSayacBaslat">Başlat</button>
+      <button id="butonSayacDuraklat">Duraklat / Devam</button>
+      <button id="butonSayacSifirla">Sıfırla</button>
+      <button id="butonTurEkle">Tur Ekle</button>
+      <p>Sayaç: <span id="sayacGosterge">0</span> saniye</p>
+      <p id="durumSayac">Durum: Bekleniyor</p>
+      <ul id="listeTurlar"></ul>
+    </section>
+  </div>
+
+  <script>
+    // Canlı Saat
+    function saatGuncelle() {
+      document.getElementById('saatGosterge').textContent = new Date().toLocaleTimeString('tr-TR');
+    }
+    setInterval(saatGuncelle, 1000);
+    saatGuncelle();
+
+    // Geri Sayım
+    const butonGeriSayimBaslat = document.getElementById('butonGeriSayimBaslat');
+    const butonGeriSayimDuraklat = document.getElementById('butonGeriSayimDuraklat');
+    const butonGeriSayimSifirla = document.getElementById('butonGeriSayimSifirla');
+    const durumGeriSayim = document.getElementById('durumGeriSayim');
+    let sayacKimlik = null, kalanSaniye = 0, duraklatildiMi = false;
+
+    function zamanFormatla(saniye) {
+      const yilSaniye = 365 * 86400;
+      const aySaniye = 30 * 86400;
+      let s = saniye;
+      const yil = Math.floor(s / yilSaniye); s %= yilSaniye;
+      const ay = Math.floor(s / aySaniye); s %= aySaniye;
+      const gun = Math.floor(s / 86400); s %= 86400;
+      const saat = Math.floor(s / 3600); s %= 3600;
+      const dakika = Math.floor(s / 60); s %= 60;
+      return `${yil} yıl ${ay} ay ${gun} gün ${saat} saat ${dakika} dakika ${s} saniye`;
+    }
+
+    function geriSayimBaslat() {
+      if (sayacKimlik) clearInterval(sayacKimlik);
+      duraklatildiMi = false;
+      sayacKimlik = setInterval(() => {
+        if (!duraklatildiMi) {
+          kalanSaniye--;
+          if (kalanSaniye > 0) {
+            durumGeriSayim.textContent = `Geri sayım: ${zamanFormatla(kalanSaniye)} kaldı`;
+          } else {
+            clearInterval(sayacKimlik);
+            sayacKimlik = null;
+            durumGeriSayim.textContent = 'Geri sayım tamamlandı!';
+          }
+        }
+      }, 1000);
+    }
+
+    butonGeriSayimBaslat.addEventListener('click', () => {
+      const y = +document.getElementById('girdiYil').value;
+      const a = +document.getElementById('girdiAy').value;
+      const g = +document.getElementById('girdiGun').value;
+      const s = +document.getElementById('girdiSaat').value;
+      const d = +document.getElementById('girdiDakika').value;
+      const sn = +document.getElementById('girdiSaniye').value;
+      if (a > 12 || g > 7 || s > 24 || d > 60 || sn > 60) { alert('Geçerli aralık giriniz!'); return; }
+      kalanSaniye = y * 365 * 86400 + a * 30 * 86400 + g * 86400 + s * 3600 + d * 60 + sn;
+      if (kalanSaniye <= 0) { alert('Pozitif süre giriniz!'); return; }
+      durumGeriSayim.textContent = `Geri sayım başladı: ${zamanFormatla(kalanSaniye)} kaldı`;
+      geriSayimBaslat();
+    });
+
+    butonGeriSayimDuraklat.addEventListener('click', () => {
+      if (sayacKimlik) {
+        duraklatildiMi = !duraklatildiMi;
+        durumGeriSayim.textContent = duraklatildiMi
+          ? `Duraklatıldı: ${zamanFormatla(kalanSaniye)} kaldı`
+          : `Devam ediyor: ${zamanFormatla(kalanSaniye)} kaldı`;
+      }
+    });
+
+    butonGeriSayimSifirla.addEventListener('click', () => {
+      if (sayacKimlik) clearInterval(sayacKimlik);
+      sayacKimlik = null;
+      kalanSaniye = 0;
+      duraklatildiMi = false;
+      durumGeriSayim.textContent = 'Geri sayım sıfırlandı';
+    });
+
+    // Sayaç
+    let sayac = 0, sayacZamani = null, duraklatildi = false, turSayisi = 0;
+    const sayacGosterge = document.getElementById('sayacGosterge');
+    const durumSayac = document.getElementById('durumSayac');
+    const listeTurlar = document.getElementById('listeTurlar');
+
+    document.getElementById('butonSayacBaslat').addEventListener('click', () => {
+      if (!sayacZamani) {
+        durumSayac.textContent = 'Sayaç çalışıyor...';
+        sayacZamani = setInterval(() => {
+          if (!duraklatildi) sayacGosterge.textContent = ++sayac;
+        }, 1000);
+      }
+    });
+
+    document.getElementById('butonSayacDuraklat').addEventListener('click', () => {
+      if (sayacZamani) {
+        duraklatildi = !duraklatildi;
+        durumSayac.textContent = duraklatildi ? 'Sayaç duraklatıldı' : 'Sayaç devam ediyor...';
+      }
+    });
+
+    document.getElementById('butonSayacSifirla').addEventListener('click', () => {
+      if (sayacZamani) clearInterval(sayacZamani);
+      sayacZamani = null;
+      sayac = 0;
+      duraklatildi = false;
+      turSayisi = 0;
+      sayacGosterge.textContent = 0;
+      durumSayac.textContent = 'Sayaç sıfırlandı';
+      listeTurlar.innerHTML = '';
+    });
+
+    document.getElementById('butonTurEkle').addEventListener('click', () => {
+      if (sayacZamani) {
+        turSayisi++;
+        const listeElemani = document.createElement('li');
+        listeElemani.textContent = `Tur ${turSayisi}: ${sayac} saniye`;
+        listeTurlar.appendChild(listeElemani);
+      }
+    });
+  </script>
+</body>
+</html>

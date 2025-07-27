@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Diyalog Kutuları</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background-color: #f0f0f0;
+    }
+    #icerikKutusu {
+      text-align: center;
+      background-color: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    button {
+      padding: 10px 20px;
+      margin: 10px 5px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+    ul {
+      list-style-type: none;
+      padding: 0;
+      margin-top: 20px;
+      text-align: left;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+    li {
+      background-color: #f9f9f9;
+      padding: 8px;
+      margin-bottom: 5px;
+      border-left: 5px solid #4CAF50;
+    }
+  </style>
+</head>
+<body>
+  <div id="icerikKutusu">
+    <h1>Diyalog Kutuları</h1>
+    <button id="uyariButonu">Uyarı Göster</button>
+    <button id="onayButonu">Onay Kutusu Göster</button>
+    <button id="isimSorButonu">İsim Sor</button>
+    <button id="temizleButonu">Geçmişi Temizle</button>
+    <ul id="sonucListesi"></ul>
+  </div>
+
+  <script>
+    const uyariButonu = document.getElementById('uyariButonu');
+    const onayButonu = document.getElementById('onayButonu');
+    const isimSorButonu = document.getElementById('isimSorButonu');
+    const temizleButonu = document.getElementById('temizleButonu');
+    const sonucListesi = document.getElementById('sonucListesi');
+
+    function sonucEkle(mesaj) {
+      const oge = document.createElement('li');
+      oge.textContent = mesaj;
+      sonucListesi.appendChild(oge);
+    }
+
+    uyariButonu.addEventListener('click', () => {
+      alert('Bu bir uyarı kutusudur!');
+      sonucEkle('Uyarı kutusu gösterildi');
+    });
+
+    onayButonu.addEventListener('click', () => {
+      const kullaniciSecimi = confirm('Devam etmek istiyor musunuz?');
+      if (kullaniciSecimi) {
+        sonucEkle('Kullanıcı onayladı');
+      } else {
+        sonucEkle('Kullanıcı iptal etti');
+      }
+    });
+
+    isimSorButonu.addEventListener('click', () => {
+      const girilenIsim = prompt('Lütfen isminizi giriniz (sadece harf ve en az 3 karakter):', 'Ali');
+      if (girilenIsim !== null) {
+        const temizIsim = girilenIsim.trim();
+        const gecerliMi = /^[A-Za-zÇĞİÖŞÜçğıöşü]{3,}$/.test(temizIsim);
+        if (gecerliMi) {
+          sonucEkle(`Kullanıcı girdi: ${temizIsim.toUpperCase()}`);
+        } else {
+          alert('Geçersiz giriş! Lütfen en az 3 harfli bir isim giriniz (sadece harfler).');
+          sonucEkle('Geçersiz isim girişi yapıldı');
+        }
+      } else {
+        sonucEkle('Kullanıcı giriş kutusunu iptal etti');
+      }
+    });
+
+    temizleButonu.addEventListener('click', () => {
+      sonucListesi.innerHTML = '';
+      sonucEkle('Geçmiş temizlendi');
+    });
+  </script>
+</body>
+</html>

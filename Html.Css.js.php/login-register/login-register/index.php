@@ -1,0 +1,251 @@
+<?php $page = "homepage"; require_once 'includes/config.php';  require_once 'includes/header.php'; include 'includes/post.php';?>
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f4f4f4;
+      color: #333;
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+    }
+
+    baslik {
+      background-color: #333;
+      color: white;
+      padding: 15px 30px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+    }
+
+    .sol {
+      font-size: 1.8em;
+      font-weight: bold;
+      white-space: nowrap;
+    }
+
+    .orta {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+      flex-grow: 1;
+    }
+
+    .orta a {
+      cursor: pointer;
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .orta a:hover {
+      text-decoration: underline;
+    }
+
+    .sag {
+      display: flex;
+      gap: 10px;
+    }
+
+    .yesil-kutu {
+      border: 2px solid #4CAF50;
+      padding: 6px 12px;
+      border-radius: 5px;
+      color: white;
+      background-color: #4CAF50;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .yesil-kutu:hover {
+      background-color: #45a049;
+    }
+
+    ana {
+      flex: 1;
+      padding: 40px 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .kart {
+      background-color: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+      max-width: 700px;
+      width: 100%;
+    }
+
+    altbilgi {
+      background-color: #333;
+      color: white;
+      text-align: center;
+      padding: 15px 0;
+    }
+
+    .gizli {
+      display: none;
+    }
+
+    .iletisim-bilgi {
+      font-size: 1.05em;
+      margin-top: 20px;
+    }
+
+    .iletisim-bilgi ul {
+      padding-left: 20px;
+    }
+
+    .iletisim-bilgi li {
+      margin-bottom: 10px;
+    }
+
+    .iletisim-bilgi strong {
+      display: inline-block;
+      width: 120px;
+    }
+
+    .ders-karti {
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      padding: 25px 30px;
+      margin-bottom: 20px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .ders-karti:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.15);
+    }
+
+    .ders-karti h3 {
+      margin-top: 0;
+      color: #333;
+    }
+
+    .ders-karti .tarih {
+      font-size: 0.9em;
+      color: #777;
+      margin-bottom: 10px;
+    }
+
+    .ders-karti a {
+      display: inline-block;
+      margin-top: 10px;
+      text-decoration: none;
+      color: white;
+      background-color: #4CAF50;
+      padding: 10px 15px;
+      border-radius: 5px;
+      transition: background-color 0.3s ease;
+      font-weight: bold;
+    }
+
+    .ders-karti a:hover {
+      background-color: #45a049;
+    }
+  </style>
+<baslik>
+    <div class="sol">Kutay Ada Öz</div>
+    <div class="orta">
+      <a onclick="sayfaGoster('anasayfa')">Anasayfa</a>
+      <a onclick="sayfaGoster('ders-notlarim')">Ders Notlarım</a>
+      <a onclick="sayfaGoster('javascript-nedir')">JavaScript Nedir?</a>
+      <a onclick="sayfaGoster('html-css-nedir')">HTML & CSS Nedir?</a>
+      <a onclick="sayfaGoster('php-mysql-nedir')">PHP & MySQL Nedir?</a>
+      <a onclick="sayfaGoster('iletisim')">İletişim</a>
+    </div>
+    <div class="sag" id="kullanici-menu">
+      <?php if(!$is_auth):?>
+      <a class="yesil-kutu" href="giris.php">Giriş</a>
+      <a class="yesil-kutu" href="kayitol.php">Kayıt Ol</a>
+      <?php else:?>
+      <a class="yesil-kutu" href="logout.php">Çıkış Yap</a>
+      <a class="yesil-kutu" href="#"><?= $user['username'] ?></a>
+      <?php endif;?>
+    </div>
+  </baslik>
+
+  <ana>
+    <bolum id="anasayfa" class="kart">
+      <h2>Hoş Geldiniz!</h2>
+      <hr>
+      <p>Kişisel bloguma hoş geldiniz. Burada ders notlarımı ve web geliştirme hakkındaki düşüncelerimi paylaşacağım.</p>
+    </bolum>
+
+    <bolum id="ders-notlarim" class="kart gizli">
+      <h2>Ders Notlarım</h2>
+      <hr>
+      <div class="ders-karti">
+        <h3>JavaScript Ödevi</h3>
+        <div class="tarih">Tarih: 2025-05-10</div>
+        <a href="assignment.html">İncele</a>
+      </div>
+    </bolum>
+
+    <bolum id="javascript-nedir" class="kart gizli">
+      <h2>JavaScript Nedir?</h2>
+      <hr>
+      <p>JavaScript, web sayfalarına etkileşim ve hareketlilik kazandıran bir programlama dilidir. Kullanıcının fare tıklaması, form doldurması gibi eylemlerine tepki verir. HTML ve CSS ile birlikte çalışarak web sitelerini daha dinamik hale getirir. Tarayıcı üzerinde çalıştığı için hızlı ve anlık geri bildirim sağlar.</p>
+    </bolum>
+
+    <bolum id="html-css-nedir" class="kart gizli">
+      <h2>HTML & CSS Nedir?</h2>
+      <hr>
+      <p>HTML, web sayfalarının iskeletini oluşturan işaretleme dilidir. CSS ise bu iskeletin görsel tasarımını ve stilini belirlemek için kullanılır. HTML ile metin, görsel, bağlantı gibi öğeler yerleştirilir. CSS ise renk, yazı tipi, konum ve düzen gibi görsel detayları kontrol eder.</p>
+    </bolum>
+
+    <bolum id="php-mysql-nedir" class="kart gizli">
+      <h2>PHP & MySQL Nedir?</h2>
+      <hr>
+      <p>PHP, sunucu tarafında çalışan ve web sayfalarını dinamik hale getiren bir programlama dilidir. MySQL ise verileri saklamak ve yönetmek için kullanılan bir veritabanı sistemidir. Bu ikili, genellikle kullanıcı etkileşimli web siteleri geliştirmek için birlikte kullanılır. PHP veriyi işlerken, MySQL bu verileri güvenli şekilde depolar ve sunar.</p>
+    </bolum>
+
+    <bolum id="iletisim" class="kart gizli">
+      <h2>İletişim</h2>
+      <hr>
+      <div class="iletisim-bilgi">
+        <ul>
+          <li><strong>Adım Soyadım:</strong> Kutay Ada Öz</li>
+          <li><strong>Telefon:</strong> 05302419707</li>
+          <li><strong>E-Posta:</strong> 2306001041@student.beykent.edu.tr</li>
+        </ul>
+      </div>
+    </bolum>
+  </ana>
+
+  <altbilgi>
+    <p>© 2025 Benim Blogum. Tüm hakları saklıdır.</p>
+  </altbilgi>
+
+  <script>
+    function sayfaGoster(sayfaId) {
+      const bolumler = document.querySelectorAll("ana bolum");
+      bolumler.forEach(bolum => bolum.classList.add("gizli"));
+      document.getElementById(sayfaId).classList.remove("gizli");
+    }
+
+    // Giriş durumu kontrolü
+    const kullaniciMenu = document.getElementById('kullanici-menu');
+    const girisYaptiMi = localStorage.getItem('giris');
+
+    if (girisYaptiMi === 'evet') {
+      kullaniciMenu.innerHTML = '<a class="yesil-kutu" href="#" onclick="cikisYap()">Çıkış Yap</a>';
+    }
+
+    function cikisYap() {
+      localStorage.removeItem('giris');
+      // Sayfayı yenile
+      window.location.reload();
+    }
+  </script>
+</body>
+</html>
